@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  nickname: MyString
+  imei: MyString
+  blocked: false
+  alert_count: 1
+  nick_count: 1
+  user_type: 1
+
+two:
+  nickname: MyString
+  imei: MyString
+  blocked: false
+  alert_count: 1
+  nick_count: 1
+  user_type: 1

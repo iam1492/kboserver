@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  comment: MyString
+  team_idx: 1
+  out_count: 1
+  strike: 1
+  ball: 1
+  base: MyString
+  stage: MyString
+  game_id: MyString
+  type: 
+  extra_1: MyString
+  extra_2: MyString
+
+two:
+  comment: MyString
+  team_idx: 1
+  out_count: 1
+  strike: 1
+  ball: 1
+  base: MyString
+  stage: MyString
+  game_id: MyString
+  type: 
+  extra_1: MyString
+  extra_2: MyString
