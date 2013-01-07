@@ -1,7 +1,7 @@
 class UpdatesController < ApiController
   respond_to :json, :xml
 
-  def create
+  def create 
   	@update = Update.new(params[:update])
 
     if @update.save
