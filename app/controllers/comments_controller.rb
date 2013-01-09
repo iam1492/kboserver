@@ -19,7 +19,13 @@ class CommentsController < ApiController
   def getComments
     @game_id = params[:game_id]
     @create_at = params[:created_at]
-    @comments = Comment.getComments(@game_id, @create_at, 200);
+
+    if @create_at.nil?
+      @comments = Comment.getFirstComments(@game_id, 200)
+    else
+      @comments = Comment.getComments(@game_id, @create_at, 200)
+    end
+    
     metadata = {:success => true, :message=>"success to get comments."}
     respond_with(@comments, :api_template => :render_comments, :root => :comments, :meta => metadata)
   end

@@ -9,6 +9,10 @@ class Comment < ActiveRecord::Base
     where("game_id = ? AND created_at > ?", _game_id, _createat).limit(_max).order('id desc')
   end
 
+  def self.getFirstComments(_game_id, _max)
+    where("game_id = ?", _game_id).limit(_max).order('id desc')
+  end
+
   def self.getMoreComments(_createdAt, _teamIdx)
     where("created_at > ? AND team_idx = ?", _createdAt, _teamIdx)
   end
