@@ -20,7 +20,7 @@ class CommentsController < ApiController
     @game_id = params[:game_id]
     @id = params[:id]
 
-    if @create_at.nil?
+    if @id.nil?
       @comments = Comment.getFirstComments(@game_id, 200)
     else
       @comments = Comment.getComments(@game_id, @id, 200)
