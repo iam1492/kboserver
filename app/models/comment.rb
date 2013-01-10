@@ -1,7 +1,7 @@
 class Comment < ActiveRecord::Base
   attr_accessible :ball, :base, :comment, :extra_1, :extra_2,
   				  :game_id, :out_count, :stage, :strike, :team_idx,
-  				  :type, :created_at, :nickname, :id
+  				  :comment_type, :created_at, :nickname, :id
 
   acts_as_api
 
@@ -28,7 +28,7 @@ class Comment < ActiveRecord::Base
   	t.add :stage
   	t.add :strike
   	t.add :team_idx
-  	t.add :type
+  	t.add :comment_type
     t.add :created_at
   end
 end
