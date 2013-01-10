@@ -5,8 +5,8 @@ class Comment < ActiveRecord::Base
 
   acts_as_api
 
-  def self.getComments(_game_id, _createat, _max)
-    where("game_id = ? AND created_at > ?", _game_id, _createat).limit(_max).order('id desc')
+  def self.getComments(_game_id, _id, _max)
+    where("game_id = ? AND id > ?", _game_id, _id).limit(_max).order('id desc')
   end
 
   def self.getFirstComments(_game_id, _max)

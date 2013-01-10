@@ -18,12 +18,13 @@ class CommentsController < ApiController
 
   def getComments
     @game_id = params[:game_id]
-    @create_at = params[:created_at]
+    @id = params[:id]
 
     if @create_at.nil?
       @comments = Comment.getFirstComments(@game_id, 200)
     else
-      @comments = Comment.getComments(@game_id, @create_at, 200)
+      @comments = Comment.getComments(@game_id, @id, 200)
+      #Debug.logger 'comment size=' + @comments.size
     end
     
     metadata = {:success => true, :message=>"success to get comments."}
