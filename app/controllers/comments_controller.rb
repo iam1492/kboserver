@@ -24,7 +24,6 @@ class CommentsController < ApiController
       @comments = Comment.getFirstComments(@game_id, 200)
     else
       @comments = Comment.getComments(@game_id, @id, 200)
-      #Debug.logger 'comment size=' + @comments.size
     end
     
     metadata = {:success => true, :message=>"success to get comments."}
