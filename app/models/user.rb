@@ -15,6 +15,15 @@ class User < ActiveRecord::Base
   	where("imei = ?", _imei).first
   end
 
+  def self.uniqueNickname?(_nickname)
+    nickname = where("nickname = ?", _nickname).first
+    if (nickname.nil?)
+      return true
+    else
+      return false
+    end
+  end
+
   def self.getBlockedUsers
     where("blocked = ?", true).order('alert_count desc')
   end

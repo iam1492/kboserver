@@ -7,6 +7,7 @@ KboApi::Application.routes.draw do
 
   match 'users(.format)' => "users#create", :via => :post
   match 'users/get_userinfo(.format)' => "users#getUserInfo", :via => :get 
+  match 'users/get_nickname_uniqueness(.format)' => "users#checkUniqueness", :via => :get 
   match 'users/block(.format)' => "users#blockUser", :via => :post  
   match 'users/unblock(.format)' => "users#unBlockUser", :via => :post  
   match 'users/blocked_list(.format)' => "users#getBlockedUserList", :via => :get  

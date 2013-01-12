@@ -25,6 +25,15 @@ class UsersController < ApiController
   	end
   end
 
+  def checkUniqueness
+    @nickname = params[:nickname]
+    if (User.uniqueNickname?(@nickname))
+      render :json=>{:success => true, :message=>"fail to get user.", :occupied=>false}
+    else
+      render :json=>{:success => true, :message=>"fail to get user.", :occupied=>true}
+    end
+  end
+
   def alertUser
     @imei = params[:imei]
     @user = User.getUserInfo(@imei)
