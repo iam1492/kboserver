@@ -6,6 +6,7 @@ KboApi::Application.routes.draw do
   match 'get_more_comments(.format)' => "comments#getMoreComments", :via => :get
 
   match 'users(.format)' => "users#create", :via => :post
+  match 'users(.format)' => "users#destroy", :via => :delete
   match 'users/get_userinfo(.format)' => "users#getUserInfo", :via => :get 
   match 'users/get_nickname_uniqueness(.format)' => "users#checkUniqueness", :via => :get 
   match 'users/block(.format)' => "users#blockUser", :via => :post  

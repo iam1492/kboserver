@@ -12,6 +12,17 @@ class UsersController < ApiController
     end
   end
 
+  def destroy
+    @user = User.getUserInfo(params[:imei])
+    if @user.destroy
+      render :json=>{:success => true, :message=>"success to destroy user."}
+      return
+    else
+      render :json=>{:success => false, :message=>"fail to destroy user."}
+      return      
+    end
+  end
+
   def getUserInfo
 
   	@imei = params[:imei]
