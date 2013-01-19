@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130110225851) do
+ActiveRecord::Schema.define(:version => 20130119151211) do
 
   create_table "comments", :force => true do |t|
     t.string   "comment",      :default => "",    :null => false
@@ -29,6 +29,8 @@ ActiveRecord::Schema.define(:version => 20130110225851) do
     t.datetime "updated_at",                      :null => false
     t.string   "nickname",     :default => "",    :null => false
     t.boolean  "is_broadcast", :default => false, :null => false
+    t.integer  "homescore",    :default => 0
+    t.integer  "awayscore",    :default => 0
   end
 
   add_index "comments", ["game_id"], :name => "index_comments_on_game_id"
