@@ -23,7 +23,8 @@ class ArticlesController < ApplicationController
 		else
 			@articles = Article.getMoreArticles(@id, 20)
 		end
-		
+		#should add has_more attribute
+		#if (@articles.id > Article.)
 		metadata = {:success => true, :message=>"success to get articles."}
 		respond_with(@articles, :api_template => :render_articles, :root => :articles, :meta => metadata)
 	end
