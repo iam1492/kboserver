@@ -17,4 +17,7 @@ KboApi::Application.routes.draw do
 
   match 'update(.json)' => "updates#create", :via => :post
   match 'update/get_last_update(.json)' => "updates#getLastUpdate", :via => :get
+
+  match 'articles(.format)' => "articles#create", :via => :post
+  match 'get_articles(.format)' => "articles#getArticles", :via => :get
 end
