@@ -1,13 +1,14 @@
 class User < ActiveRecord::Base
-  attr_accessible :alert_count, :blocked, :imei, :nick_count, :nickname, :user_type
+  attr_accessible :cached_votes_down, :blocked, :imei, :nick_count, :nickname, :user_type
   acts_as_api
+  acts_as_votable
 
   api_accessible :render_users do |t|
     t.add :imei
   	t.add :nickname
   	t.add :blocked
   	t.add :nick_count
-  	t.add :alert_count
+  	t.add :alerts_count
   	t.add :user_type
   end
 
@@ -24,6 +25,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def alerts_count
+    self.cached_votes_down
+  end
+
   def self.getBlockedUsers
     where("blocked = ?", true).order('alert_count desc')
   end
@@ -31,5 +36,4 @@ class User < ActiveRecord::Base
   def self.getHighAlertUsers
     order("alert_count desc").limit(50)
   end
-
 end

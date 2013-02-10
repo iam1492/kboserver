@@ -11,15 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130205144200) do
+ActiveRecord::Schema.define(:version => 20130210141228) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
     t.string   "nickname"
     t.string   "article_url"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.integer  "like",               :default => 0
+    t.integer  "alert_count",        :default => 0
+    t.integer  "cached_votes_total", :default => 0
+    t.integer  "cached_votes_score", :default => 0
+    t.integer  "cached_votes_up",    :default => 0
+    t.integer  "cached_votes_down",  :default => 0
   end
+
+  add_index "articles", ["cached_votes_down"], :name => "index_articles_on_cached_votes_down"
+  add_index "articles", ["cached_votes_score"], :name => "index_articles_on_cached_votes_score"
+  add_index "articles", ["cached_votes_total"], :name => "index_articles_on_cached_votes_total"
+  add_index "articles", ["cached_votes_up"], :name => "index_articles_on_cached_votes_up"
 
   create_table "comments", :force => true do |t|
     t.string   "comment",      :default => "",    :null => false
@@ -52,17 +63,41 @@ ActiveRecord::Schema.define(:version => 20130205144200) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "nickname",    :default => "",    :null => false
-    t.string   "imei",        :default => "",    :null => false
-    t.boolean  "blocked",     :default => false
-    t.integer  "alert_count", :default => 0
-    t.integer  "nick_count",  :default => 0
-    t.integer  "user_type",   :default => 0
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.string   "nickname",           :default => "",    :null => false
+    t.string   "imei",               :default => "",    :null => false
+    t.boolean  "blocked",            :default => false
+    t.integer  "alert_count",        :default => 0
+    t.integer  "nick_count",         :default => 0
+    t.integer  "user_type",          :default => 0
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+    t.integer  "cached_votes_total", :default => 0
+    t.integer  "cached_votes_score", :default => 0
+    t.integer  "cached_votes_up",    :default => 0
+    t.integer  "cached_votes_down",  :default => 0
   end
 
+  add_index "users", ["cached_votes_down"], :name => "index_users_on_cached_votes_down"
+  add_index "users", ["cached_votes_score"], :name => "index_users_on_cached_votes_score"
+  add_index "users", ["cached_votes_total"], :name => "index_users_on_cached_votes_total"
+  add_index "users", ["cached_votes_up"], :name => "index_users_on_cached_votes_up"
   add_index "users", ["imei"], :name => "index_users_on_imei", :unique => true
   add_index "users", ["nickname"], :name => "index_users_on_nickname", :unique => true
+
+  create_table "votes", :force => true do |t|
+    t.integer  "votable_id"
+    t.string   "votable_type"
+    t.integer  "voter_id"
+    t.string   "voter_type"
+    t.boolean  "vote_flag"
+    t.string   "vote_scope"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "votes", ["votable_id", "votable_type", "vote_scope"], :name => "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+  add_index "votes", ["votable_id", "votable_type"], :name => "index_votes_on_votable_id_and_votable_type"
+  add_index "votes", ["voter_id", "voter_type", "vote_scope"], :name => "index_votes_on_voter_id_and_voter_type_and_vote_scope"
+  add_index "votes", ["voter_id", "voter_type"], :name => "index_votes_on_voter_id_and_voter_type"
 
 end

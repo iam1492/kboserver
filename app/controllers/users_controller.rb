@@ -23,6 +23,16 @@ class UsersController < ApiController
     end
   end
 
+  def getUserList
+    @users = User.all
+    if (@users.nil?)
+      render :json=>{:success => false, :message=>"fail to get users."}
+    else
+      metadata = {:success => true, :message=>"success to get users."}
+      respond_with(@users, :api_template => :render_users, :root => :users, :meta => metadata)
+    end
+  end
+
   def getUserInfo
 
   	@imei = params[:imei]
@@ -32,7 +42,7 @@ class UsersController < ApiController
       render :json=>{:success => false, :message=>"fail to get user."}
   	else
       metadata = {:success => true, :message=>"success to get user."}
-      respond_with(@user, :api_template => :render_users, :root => :users, :meta => metadata)
+      respond_with(@user, :api_template => :render_users, :root => :user, :meta => metadata)
   	end
   end
 
@@ -47,20 +57,24 @@ class UsersController < ApiController
 
   def alertUser
     @imei = params[:imei]
+    @alert_imei = params[:alert_imei]
     @user = User.getUserInfo(@imei)
+    @alert_user = User.getUserInfo(@alert_imei)
     if (@user.nil?)
-      render :json=>{:success => false, :message=>"fail to alert user. no user found"}
+      render :json=>{:success => false, :message=>"fail to alert user. no me found"}
       return      
     end
 
-    alert_count = @user.alert_count + 1
-
-    if (@user.update_attributes(:alert_count => alert_count))
-      render :json=>{:success => true, :message=>"success to alert user."}
-      return
-    else
-      render :json=>{:success => false, :message=>"fail to alert user."}
+    if (@alert_user.nil?)
+      render :json=>{:success => false, :message=>"fail to alert user. no alert target user found"}
       return      
+    end
+
+    if (@alert_user.downvote_from @user)
+      newCount = @alert_user.downvotes.size
+      render :json=>{:success => true, :message=>"success to update alert count. current alert #{newCount}"}
+    else
+      render :json=>{:success => false, :message=>"fail to update alert count."}
     end
   end
 
