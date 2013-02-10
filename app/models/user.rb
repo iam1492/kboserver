@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
   	where("imei = ?", _imei).first
   end
 
+  def self.getUserInfoByNickname(_nickname)
+    where("nickname = ?", _nickname).first
+  end
+
   def self.uniqueNickname?(_nickname)
     nickname = where("nickname = ?", _nickname).first
     if (nickname.nil?)

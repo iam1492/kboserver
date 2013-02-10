@@ -46,6 +46,19 @@ class UsersController < ApiController
   	end
   end
 
+  def getUserInfoByNickname
+
+    @nickname = params[:nickname]
+    @user = User.getUserInfoByNickname(@nickname)
+
+    if (@user.nil?)
+      render :json=>{:success => false, :message=>"fail to get user."}
+    else
+      metadata = {:success => true, :message=>"success to get user."}
+      respond_with(@user, :api_template => :render_users, :root => :user, :meta => metadata)
+    end
+  end
+
   def checkUniqueness
     @nickname = params[:nickname]
     if (User.uniqueNickname?(@nickname))
@@ -57,9 +70,9 @@ class UsersController < ApiController
 
   def alertUser
     @imei = params[:imei]
-    @alert_imei = params[:alert_imei]
+    @nickname = params[:nickname]
     @user = User.getUserInfo(@imei)
-    @alert_user = User.getUserInfo(@alert_imei)
+    @alert_user = User.getUserInfoByNickname(@nickname)
     if (@user.nil?)
       render :json=>{:success => false, :message=>"fail to alert user. no me found"}
       return      
