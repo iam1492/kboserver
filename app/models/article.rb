@@ -26,7 +26,7 @@ class Article < ActiveRecord::Base
   	t.add :article_url
   	t.add :title
     t.add :alert_count
-    t.add :votes_count
+    t.add :likes_count
     t.add :created_at
   end
 
