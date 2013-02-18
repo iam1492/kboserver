@@ -34,10 +34,10 @@ class User < ActiveRecord::Base
   end
 
   def self.getBlockedUsers
-    where("blocked = ?", true).order('alert_count desc')
+    where("blocked = ?", true).order('cached_votes_down desc')
   end
 
   def self.getHighAlertUsers
-    order("alert_count desc").limit(50)
+    order("cached_votes_down desc").limit(50)
   end
 end
