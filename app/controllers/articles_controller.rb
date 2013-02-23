@@ -86,10 +86,10 @@ class ArticlesController < ApplicationController
 	      return      
 	    end
 
-	    if (@user.voted_for? @article)
-	    	render :json=>{:success => false, :result_code => 1, :message=>"already vote to article"}
-	    	return
-	    end
+	    # if (@user.voted_for? @article)
+	    # 	render :json=>{:success => false, :result_code => 1, :message=>"already vote to article"}
+	    # 	return
+	    # end
 	   
 	    if (@article.vote(:voter => @user))
 	    	newCount = @article.votes.size
