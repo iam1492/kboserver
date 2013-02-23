@@ -84,14 +84,15 @@ class UsersController < ApiController
       return      
     end
 
-    # if (@user.voted_down_on? @alert_user)
-    #   render :json=>{:success => false, :result_code => 1, :message=>"already alert user"}
-    #   return
-    # end
+    if (@user.voted_down_on? @alert_user)
+      render :json=>{:success => false, :result_code => 1, :message=>"already alert user"}
+      return
+    end
 
-    if (@alert_user.downvote_from @user)
-      newCount = @alert_user.downvotes.size
-      render :json=>{:success => true, :result_code => 0, :message=>"success to update alert count. current alert #{newCount}"}
+    #if (@alert_user.downvote_from @user)
+      #newCount = @alert_user.downvotes.size
+    if (@user.down_votes @alert_user)
+      render :json=>{:success => true, :result_code => 0, :message=>"success to update alert count. current alert"}
     else
       render :json=>{:success => false, :result_code => 2, :message=>"fail to update alert count."}
     end
