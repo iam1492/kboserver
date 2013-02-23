@@ -32,11 +32,12 @@ class ArticlesController < ApplicationController
 	def getArticlesByLike
 
 		@id = params[:id]
+		@vote_count = params[:vote_count]
 
 		if @id.nil?
 			@articles = Article.getFirstArticlesByLike(20)
 		else
-			@articles = Article.getMoreArticlesByLike(@id, 20)
+			@articles = Article.getMoreArticlesByLike(@vote_count, @id, 20)
 		end
 		#should add has_more attribute
 		#if (@articles.id > Article.)

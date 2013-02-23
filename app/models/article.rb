@@ -12,8 +12,8 @@ class Article < ActiveRecord::Base
     limit(_max).order('id desc')
   end
 
-  def self.getMoreArticlesByLike(_id, _max)
-    where("id < ?",_id).limit(_max).order('cached_votes_up desc')
+  def self.getMoreArticlesByLike(vote_count, _id, _max)
+    where("cached_votes_up < ? AND id !=  ?",vote_count, _id).limit(_max).order('cached_votes_up desc')
   end
 
   def self.getFirstArticlesByLike(_max)
