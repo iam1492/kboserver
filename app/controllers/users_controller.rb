@@ -72,6 +72,7 @@ class UsersController < ApiController
     @imei = params[:imei]
     @nickname = params[:nickname]
     @user = User.getUserInfo(@imei)
+
     @alert_user = User.getUserInfoByNickname(@nickname)
     if (@user.nil?)
       render :json=>{:success => false, :message=>"fail to alert user. no me found"}
@@ -83,11 +84,16 @@ class UsersController < ApiController
       return      
     end
 
+    if (@user.voted_down_on? @alert_user)
+      render :json=>{:success => false, :result_code => 1, :message=>"already alert user"}
+      return
+    end
+
     if (@alert_user.downvote_from @user)
       newCount = @alert_user.downvotes.size
-      render :json=>{:success => true, :message=>"success to update alert count. current alert #{newCount}"}
+      render :json=>{:success => true, :result_code => 0, :message=>"success to update alert count. current alert #{newCount}"}
     else
-      render :json=>{:success => false, :message=>"fail to update alert count."}
+      render :json=>{:success => false, :result_code => 2, :message=>"fail to update alert count."}
     end
   end
 

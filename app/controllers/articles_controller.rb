@@ -85,12 +85,17 @@ class ArticlesController < ApplicationController
 	      render :json=>{:success => false, :message=>"cannot find article"}
 	      return      
 	    end
+
+	    if (@user.voted_for? @article)
+	    	render :json=>{:success => false, :result_code => 1, :message=>"already vote to article"}
+	    	return
+	    end
 	   
 	    if (@article.vote(:voter => @user))
 	    	newCount = @article.votes.size
-			render :json=>{:success => true, :message=>"success to update like count. current like #{newCount}"}
+			render :json=>{:success => true, :result_code => 0, :message=>"success to update like count. current like #{newCount}"}
 		else
-			render :json=>{:success => false, :message=>"fail to update like count. current like #{newCount}"}
+			render :json=>{:success => false, :result_code => 2, :message=>"fail to update like count. current like #{newCount}"}
 		end
 
   	end
