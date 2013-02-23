@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   attr_accessible :cached_votes_down, :blocked, :imei, :nick_count, :nickname, :user_type
   acts_as_api
+  acts_as_voter
   acts_as_votable
 
   api_accessible :render_users do |t|
