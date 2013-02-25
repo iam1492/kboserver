@@ -18,11 +18,9 @@ class ArticlesController < ApplicationController
 		@id = params[:id]
 		@password = params[:password]
 
-		if (@id.eql?"iam1492" && @passwod.eql?"ekseo00")
-			Article.delete_all
-			render :json=>{:success => true, :message=>"success to delete all articles."}
-			return
-		end
+		Article.delete_all
+		render :json=>{:success => true, :message=>"success to delete all articles."}
+		return
 	end
 
 	def getArticles
