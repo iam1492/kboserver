@@ -4,7 +4,7 @@ class Article < ActiveRecord::Base
   acts_as_api
   acts_as_votable
 
-  self.per_page = 2
+  self.per_page = 10
 
   def self.getMoreArticles(_id, _max)
     where("id < ?",_id).limit(_max).order('id desc')
