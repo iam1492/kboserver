@@ -14,6 +14,12 @@ class ArticlesController < ApplicationController
 		end
 	end
 
+	def deleteAllArticles
+		Article.delete_all
+		render :json=>{:success => true, :message=>"success to delete all articles."}
+		return
+	end
+
 	def getArticles
 
 		@id = params[:id]
