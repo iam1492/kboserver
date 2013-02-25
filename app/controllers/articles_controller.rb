@@ -24,34 +24,24 @@ class ArticlesController < ApplicationController
 	end
 
 	def getArticles
-
-		@id = params[:id]
-
-		if @id.nil?
-			@articles = Article.getFirstArticles(20)
+		@articles = Article.page(params[:page]).order('created_at DESC')
+		if (@articles.nil?)
+			render :json=>{:success => false, :message=>"fail to get articles."}
 		else
-			@articles = Article.getMoreArticles(@id, 20)
+			metadata = {:success => true, :message=>"success to get articles."}
+			respond_with(@articles, :api_template => :render_articles, :root => :articles, :meta => metadata)
 		end
-		#should add has_more attribute
-		#if (@articles.id > Article.)
-		metadata = {:success => true, :message=>"success to get articles."}
-		respond_with(@articles, :api_template => :render_articles, :root => :articles, :meta => metadata)
+		
 	end
 
 	def getArticlesByLike
-
-		@id = params[:id]
-		@vote_count = params[:vote_count]
-
-		if @id.nil?
-			@articles = Article.getFirstArticlesByLike(20)
+		@articles = Article.page(params[:page]).order('cached_votes_up DESC')
+		if (@articles.nil?)
+			render :json=>{:success => false, :message=>"fail to get articles."}
 		else
-			@articles = Article.getMoreArticlesByLike(@vote_count, @id, 20)
+			metadata = {:success => true, :message=>"success to get articles."}
+			respond_with(@articles, :api_template => :render_articles, :root => :articles, :meta => metadata)
 		end
-		#should add has_more attribute
-		#if (@articles.id > Article.)
-		metadata = {:success => true, :message=>"success to get articles."}
-		respond_with(@articles, :api_template => :render_articles, :root => :articles, :meta => metadata)
 	end
 
 	def alert
