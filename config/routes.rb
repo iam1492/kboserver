@@ -26,5 +26,6 @@ KboApi::Application.routes.draw do
   match 'articles/alert(.format)' => "articles#alert", :via => :post
   match 'articles/like(.format)' => "articles#like", :via => :post
   match 'articles/vote(.format)' => "articles#vote", :via => :post
+  match 'articles/:id(.format)' => "articles#deleteArticle", :via => :delete, :constraints => {:id => /\d+/}
   #match 'articles/delete_all(.json)' => "articles#deleteAllArticles", :vis => :post
 end

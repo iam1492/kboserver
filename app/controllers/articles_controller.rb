@@ -14,6 +14,35 @@ class ArticlesController < ApplicationController
 		end
 	end
 
+	def deleteArticle
+		@imei = params[:imei]
+		@id = params[:id]
+
+		@article = Article.find(@id)
+		@requestUser = User.getUserInfo(@imei);
+
+		if (@article.nil?)
+			render :json=>{:success => false, :result_code => 2, :message=>"no article found"}
+			return
+		end
+
+		if (@requestUser.nil?)
+			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
+			return
+		end
+
+		if (@article.nickname.eql? @requestUser.nickname)
+			if(@article.destroy)
+				render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
+			else
+				render :json=>{:success => false, :result_code => 2, :message=>"fails to delete articles"}
+			end
+		else
+			render :json=>{:success => false, :result_code => 1, :message=>"no permission"}
+		end
+
+	end
+
 	def deleteAllArticles
 		@id = params[:id]
 		@password = params[:password]
