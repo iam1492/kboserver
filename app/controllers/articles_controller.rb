@@ -18,6 +18,11 @@ class ArticlesController < ApplicationController
 		@imei = params[:imei]
 		@id = params[:id]
 
+		if (!Article.exists?@id)
+		  render :json=>{:success => false, :result_code => 2, :message=>"no article found"}
+		  return
+		end
+
 		@article = Article.find(@id)
 		@requestUser = User.getUserInfo(@imei);
 
