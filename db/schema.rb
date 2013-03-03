@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130210141228) do
+ActiveRecord::Schema.define(:version => 20130303134337) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -31,6 +31,28 @@ ActiveRecord::Schema.define(:version => 20130210141228) do
   add_index "articles", ["cached_votes_score"], :name => "index_articles_on_cached_votes_score"
   add_index "articles", ["cached_votes_total"], :name => "index_articles_on_cached_votes_total"
   add_index "articles", ["cached_votes_up"], :name => "index_articles_on_cached_votes_up"
+
+  create_table "boards", :force => true do |t|
+    t.string   "title"
+    t.string   "content"
+    t.string   "imei"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.integer  "cached_votes_total", :default => 0
+    t.integer  "cached_votes_score", :default => 0
+    t.integer  "cached_votes_up",    :default => 0
+    t.integer  "cached_votes_down",  :default => 0
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  add_index "boards", ["cached_votes_down"], :name => "index_boards_on_cached_votes_down"
+  add_index "boards", ["cached_votes_score"], :name => "index_boards_on_cached_votes_score"
+  add_index "boards", ["cached_votes_total"], :name => "index_boards_on_cached_votes_total"
+  add_index "boards", ["cached_votes_up"], :name => "index_boards_on_cached_votes_up"
+  add_index "boards", ["imei"], :name => "index_boards_on_imei"
 
   create_table "comments", :force => true do |t|
     t.string   "comment",      :default => "",    :null => false
@@ -53,6 +75,25 @@ ActiveRecord::Schema.define(:version => 20130210141228) do
   end
 
   add_index "comments", ["game_id"], :name => "index_comments_on_game_id"
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "alerter_id"
+    t.integer  "alerted_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "relationships", ["alerted_id"], :name => "index_relationships_on_alerted_id"
+  add_index "relationships", ["alerter_id", "alerted_id"], :name => "index_relationships_on_alerter_id_and_alerted_id", :unique => true
+  add_index "relationships", ["alerter_id"], :name => "index_relationships_on_alerter_id"
+
+  create_table "replies", :force => true do |t|
+    t.string   "content"
+    t.integer  "board_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "imei"
+  end
 
   create_table "updates", :force => true do |t|
     t.string   "content"

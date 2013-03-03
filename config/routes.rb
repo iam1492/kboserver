@@ -12,9 +12,11 @@ KboApi::Application.routes.draw do
   match 'users/block(.format)' => "users#blockUser", :via => :post  
   match 'users/unblock(.format)' => "users#unBlockUser", :via => :post  
   match 'users/blocked_list(.format)' => "users#getBlockedUserList", :via => :get  
-  match 'users/alert(.format)' => "users#alertUser", :via => :post  
+  # match 'users/alert(.format)' => "users#alertUser", :via => :post  
   match 'users/high_alert_users(.format)' => "users#getHighAlertUsers", :vis => :get
+  match 'users/high_alert_usersv2(.format)' => "users#getHighAlertUsersV2", :vis => :get
   match 'users/get_all_users(.format)' => "users#getUserList", :via => :get
+  match 'users/alert(.format)' => "users#alertUserV2", :via => :post  
 
   match 'update(.json)' => "updates#create", :via => :post
   match 'update/get_last_update(.json)' => "updates#getLastUpdate", :via => :get
@@ -27,5 +29,12 @@ KboApi::Application.routes.draw do
   match 'articles/like(.format)' => "articles#like", :via => :post
   match 'articles/vote(.format)' => "articles#vote", :via => :post
   match 'articles/:id(.format)' => "articles#deleteArticle", :via => :delete, :constraints => {:id => /\d+/}
+
+  match 'boards(.format)' => "boards#create", :via => :post
+  match 'boards/vote(.format)' => "boards#vote", :via => :post
+  match 'boards/get_boards(.format)' => "boards#getBoards", :via => :get
+  match 'boards/get_boards_by_like(.format)' => "boards#getBoardsByLike", :via => :get
+  match 'boards/:id(.format)' => "boards#deleteBoard", :via => :delete, :constraints => {:id => /\d+/}
+  match 'boards/add_reply(.format)' => "boards#add_reply", :via => :post
   #match 'articles/delete_all(.json)' => "articles#deleteAllArticles", :vis => :post
 end

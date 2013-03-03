@@ -120,10 +120,10 @@ class ArticlesController < ApplicationController
 	      return      
 	    end
 
-	    # if (@user.voted_for? @article)
-	    # 	render :json=>{:success => false, :result_code => 1, :message=>"already vote to article"}
-	    # 	return
-	    # end
+	    if (@user.voted_up_on? @article)
+	    	render :json=>{:success => false, :result_code => 1, :message=>"already vote to article"}
+	    	return
+	    end
 	   
 	    if (@article.vote(:voter => @user))
 	    	newCount = @article.votes.size
@@ -131,7 +131,6 @@ class ArticlesController < ApplicationController
 		else
 			render :json=>{:success => false, :result_code => 2, :message=>"fail to update like count. current like #{newCount}"}
 		end
-
   	end
 
 	def like

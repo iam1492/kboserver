@@ -68,13 +68,13 @@ class UsersController < ApiController
     end
   end
 
-  def alertUser
+  def alertUserV2
     @imei = params[:imei]
     @nickname = params[:nickname]
-    @user = User.getUserInfo(@imei)
-
+    @me = User.getUserInfo(@imei)
     @alert_user = User.getUserInfoByNickname(@nickname)
-    if (@user.nil?)
+
+    if (@me.nil?)
       render :json=>{:success => false, :message=>"fail to alert user. no me found"}
       return      
     end
@@ -84,15 +84,13 @@ class UsersController < ApiController
       return      
     end
 
-    # if (@user.voted_down_on? @alert_user)
-    #   render :json=>{:success => false, :result_code => 1, :message=>"already alert user"}
-    #   return
-    # end
+    if (@me.has_alerted?@alert_user)
+      render :json=>{:success => false, :result_code => 1, :message=>"already alert user"}
+      return
+    end
 
-    if (@alert_user.downvote_from @user)
-      newCount = @alert_user.downvotes.size
-    # if (@user.down_votes @alert_user)
-      render :json=>{:success => true, :alert_count=> newCount, :message=>"success to update alert count. current alert #{newCount}"}
+    if (@me.alert!(@alert_user))
+      render :json=>{:success => true, :result_code => 0, :message=>"success to update alert count. current alert"}
     else
       render :json=>{:success => false, :result_code => 2, :message=>"fail to update alert count."}
     end
@@ -101,6 +99,17 @@ class UsersController < ApiController
   def getHighAlertUsers
     @users = User.getHighAlertUsers
     
+    if (@users.nil? or @users.count == 0)
+      render :json=>{:success => false, :message=>"fail to get hight alert user list"}
+      return  
+    else
+      metadata = {:success => true, :message=>"success to get high alert user list."}
+      respond_with(@users, :api_template => :render_users, :root => :users, :meta => metadata) 
+    end
+  end
+  def getHighAlertUsersV2
+    @users = User.getHighAlertUsersV2
+
     if (@users.nil? or @users.count == 0)
       render :json=>{:success => false, :message=>"fail to get hight alert user list"}
       return  
@@ -158,4 +167,34 @@ class UsersController < ApiController
     end
   end
 
+  
+  # def alertUser
+  #   @imei = params[:imei]
+  #   @nickname = params[:nickname]
+  #   @user = User.getUserInfo(@imei)
+
+  #   @alert_user = User.getUserInfoByNickname(@nickname)
+  #   if (@user.nil?)
+  #     render :json=>{:success => false, :message=>"fail to alert user. no me found"}
+  #     return      
+  #   end
+
+  #   if (@alert_user.nil?)
+  #     render :json=>{:success => false, :message=>"fail to alert user. no alert target user found"}
+  #     return      
+  #   end
+
+  #   # if (@user.voted_down_on? @alert_user)
+  #   #   render :json=>{:success => false, :result_code => 1, :message=>"already alert user"}
+  #   #   return
+  #   # end
+
+  #   if (@alert_user.downvote_from @user)
+  #     newCount = @alert_user.downvotes.size
+  #   # if (@user.down_votes @alert_user)
+  #     render :json=>{:success => true, :alert_count=> newCount, :message=>"success to update alert count. current alert #{newCount}"}
+  #   else
+  #     render :json=>{:success => false, :result_code => 2, :message=>"fail to update alert count."}
+  #   end
+  # end
 end

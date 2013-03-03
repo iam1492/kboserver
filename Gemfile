@@ -9,7 +9,7 @@ gem 'pg'
 gem 'acts_as_api'
 gem 'acts_as_votable', '~> 0.5.0'
 gem 'will_paginate', '~> 3.0'
-
+gem "paperclip", "~> 3.0"
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
