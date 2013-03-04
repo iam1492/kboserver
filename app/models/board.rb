@@ -11,11 +11,26 @@ class Board < ActiveRecord::Base
   validates :content, presence: true
   validates :imei, presence: true
 
-  api_accessible :board_with_replies do |t| 
+  api_accessible :board_without_replies do |t| 
   	t.add :id
   	t.add :title
   	t.add :content
   	t.add :total_replies
+    #t.add :replies
+    t.add :nickname
+    t.add :imei
+    t.add :created_at
+    t.add :likes_count
+    t.add :photo_path
+    t.add :photo_thumbnail_path
+    t.add :photo_medium_path
+  end
+
+  api_accessible :board_with_replies do |t| 
+    t.add :id
+    t.add :title
+    t.add :content
+    t.add :total_replies
     t.add :replies
     t.add :nickname
     t.add :imei

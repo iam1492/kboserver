@@ -86,7 +86,7 @@ class BoardsController < ApplicationController
 			render :json=>{:success => false, :message=>"fail to get boards."}
 		else
 			metadata = {:success => true, :message=>"success to get boards."}
-			respond_with(@boards, :api_template => :board_with_replies, :root => :boards, :meta => metadata)
+			respond_with(@boards, :api_template => :board_without_replies, :root => :boards, :meta => metadata)
 		end
 		
 	end
@@ -97,8 +97,20 @@ class BoardsController < ApplicationController
 			render :json=>{:success => false, :message=>"fail to get boards."}
 		else
 			metadata = {:success => true, :message=>"success to get boards."}
-			respond_with(@boards, :api_template => :board_with_replies, :root => :boards, :meta => metadata)
+			respond_with(@boards, :api_template => :board_without_replies, :root => :boards, :meta => metadata)
 		end
+	end
+
+	def show
+		@id = params[:id]
+		@board = Board.find(@id)
+		
+		if (@board.nil?)
+	      render :json=>{:success => false, :message=>"cannot find board"}
+	      return      
+	    end
+	    metadata = {:success => true, :message=>"success to get replies."}
+		respond_with(@board, :api_template => :board_with_replies, :root => :board, :meta => metadata)
 	end
 
 	def vote
