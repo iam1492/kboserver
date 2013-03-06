@@ -1,5 +1,5 @@
 class Board < ActiveRecord::Base
-  attr_accessible :title, :content, :imei, :id ,:photo
+  attr_accessible :title, :content, :imei, :id ,:photo, :board_type
   has_attached_file :photo, :styles => { :medium => "720x", :thumb => "100x100>" }
 
   self.per_page = 10
@@ -24,6 +24,7 @@ class Board < ActiveRecord::Base
     t.add :photo_path
     t.add :photo_thumbnail_path
     t.add :photo_medium_path
+    t.add :board_type
   end
 
   api_accessible :board_with_replies do |t| 
@@ -39,6 +40,7 @@ class Board < ActiveRecord::Base
     t.add :photo_path
     t.add :photo_thumbnail_path
     t.add :photo_medium_path
+    t.add :board_type
   end
 
   def total_replies

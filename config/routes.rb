@@ -31,6 +31,8 @@ KboApi::Application.routes.draw do
   match 'articles/:id(.format)' => "articles#deleteArticle", :via => :delete, :constraints => {:id => /\d+/}
 
   match 'boards(.format)' => "boards#create", :via => :post
+  match 'boards/update(.format)' => "boards#update", :via => :post
+  
   match 'boards/:id(.format)' => "boards#show", :via => :get, :constraints => {:id => /\d+/}
   match 'boards/vote(.format)' => "boards#vote", :via => :post
   match 'boards/get_boards(.format)' => "boards#getBoards", :via => :get

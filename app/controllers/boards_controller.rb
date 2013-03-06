@@ -12,6 +12,17 @@ class BoardsController < ApplicationController
 		end
 	end
 
+	def update
+		@board = Board.find(params[:id])
+		@board.update_attributes(params[:board])
+
+		if @board.save
+			render :json=>{:success => true, :result_code => 0, :message=>"success to update board."}
+		else
+			render :json=>{:success => false, :result_code => 2, :message=>"fail to update board."}
+		end
+	end
+
 	def deleteBoard
 		@imei = params[:imei]
 		@id = params[:id]
@@ -81,7 +92,7 @@ class BoardsController < ApplicationController
 	end
 
 	def getBoards
-		@boards = Board.page(params[:page]).order('created_at DESC')
+		@boards = Board.where("board_type = ?", params[:board_type]).page(params[:page]).order('created_at DESC')
 		if (@boards.nil?)
 			render :json=>{:success => false, :message=>"fail to get boards."}
 		else
@@ -92,7 +103,7 @@ class BoardsController < ApplicationController
 	end
 
 	def getBoardsByLike
-		@boards = Board.page(params[:page]).order('cached_votes_up DESC')
+		@boards = Board.where("board_type = ?", params[:board_type]).page(params[:page]).order('cached_votes_up DESC')
 		if (@boards.nil?)
 			render :json=>{:success => false, :message=>"fail to get boards."}
 		else
