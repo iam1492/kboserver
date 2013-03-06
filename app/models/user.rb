@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count #:cached_votes_down
+  attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count #:cached_votes_down
   acts_as_api
   acts_as_voter
   #acts_as_votable
@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   	t.add :nickname
   	t.add :blocked
   	t.add :nick_count
-  	t.add :alerts_count
+    t.add :alerters_count
   	t.add :user_type
   end
 
@@ -30,10 +30,6 @@ class User < ActiveRecord::Base
     else
       true
     end
-  end
-
-  def alerts_count
-    self.alerters.count
   end
 
   def self.getUserInfo(_imei)
@@ -63,9 +59,5 @@ class User < ActiveRecord::Base
 
   def self.getHighAlertUsers
     order("cached_votes_down desc").limit(50)
-  end
-
-  def self.getHighAlertUsersV2
-    User.find(:all).sort!{|u1|u1.alerts_count}
   end
 end

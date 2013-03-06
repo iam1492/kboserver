@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305144302) do
+ActiveRecord::Schema.define(:version => 20130306152541) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(:version => 20130305144302) do
     t.integer  "cached_votes_score", :default => 0
     t.integer  "cached_votes_up",    :default => 0
     t.integer  "cached_votes_down",  :default => 0
+    t.integer  "alerters_count",     :default => 0
   end
 
   add_index "users", ["cached_votes_down"], :name => "index_users_on_cached_votes_down"

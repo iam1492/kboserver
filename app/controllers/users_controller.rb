@@ -108,7 +108,8 @@ class UsersController < ApiController
     end
   end
   def getHighAlertUsersV2
-    @users = User.getHighAlertUsersV2
+    @users = User.page(params[:page]).order('alerters_count DESC')
+  #   @users = User.getHighAlertUsersV2
 
     if (@users.nil? or @users.count == 0)
       render :json=>{:success => false, :message=>"fail to get hight alert user list"}
