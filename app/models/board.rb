@@ -20,27 +20,21 @@ class Board < ActiveRecord::Base
     t.add :nickname
     t.add :imei
     t.add :created_at
-    t.add :likes_count
+    t.add :likes_count    
     t.add :photo_path
     t.add :photo_thumbnail_path
     t.add :photo_medium_path
     t.add :board_type
+    t.add :is_voted
   end
 
   api_accessible :board_with_replies do |t| 
-    t.add :id
-    t.add :title
-    t.add :content
-    t.add :total_replies
     t.add :replies
-    t.add :nickname
-    t.add :imei
-    t.add :created_at
-    t.add :likes_count
-    t.add :photo_path
-    t.add :photo_thumbnail_path
-    t.add :photo_medium_path
-    t.add :board_type
+  end
+
+  def is_voted
+    @user = User.getUserInfo(self.imei)
+    @user.voted_up_on?(self)
   end
 
   def total_replies

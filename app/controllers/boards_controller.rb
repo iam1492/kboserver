@@ -121,7 +121,7 @@ class BoardsController < ApplicationController
 	      return      
 	    end
 	    metadata = {:success => true, :message=>"success to get replies."}
-		respond_with(@board, :api_template => :board_with_replies, :root => :board, :meta => metadata)
+		respond_with(@board, :api_template => :board_with_replies, :meta => metadata)
 	end
 
 	def vote
