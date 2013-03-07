@@ -17,6 +17,7 @@ class ArticlesController < ApplicationController
 	def deleteArticle
 		@imei = params[:imei]
 		@id = params[:id]
+		@passcode = params[:passcode]
 
 		if (!Article.exists?@id)
 		  render :json=>{:success => false, :result_code => 2, :message=>"no article found"}
@@ -34,6 +35,16 @@ class ArticlesController < ApplicationController
 		if (@requestUser.nil?)
 			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
 			return
+		end
+
+		if (@passcode == 3417)
+			if(@article.destroy)
+				render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
+				return
+			else
+				render :json=>{:success => false, :result_code => 2, :message=>"fails to delete articles"}
+				return
+			end
 		end
 
 		if (@article.nickname.eql? @requestUser.nickname)
