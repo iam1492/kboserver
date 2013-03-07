@@ -32,11 +32,6 @@ class ArticlesController < ApplicationController
 			return
 		end
 
-		if (@requestUser.nil?)
-			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
-			return
-		end
-
 		if (@passcode == 3417)
 			if(@article.destroy)
 				render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
@@ -45,6 +40,11 @@ class ArticlesController < ApplicationController
 				render :json=>{:success => false, :result_code => 2, :message=>"fails to delete articles"}
 				return
 			end
+		end
+
+		if (@requestUser.nil?)
+			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
+			return
 		end
 
 		if (@article.nickname.eql? @requestUser.nickname)
