@@ -32,7 +32,7 @@ class ArticlesController < ApplicationController
 			return
 		end
 
-		if (@passcode == 3417)
+		if (@passcode.eql?"3417")
 			if(@article.destroy)
 				render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
 				return
