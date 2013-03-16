@@ -108,11 +108,11 @@ class UsersController < ApiController
     end
   end
   def getHighAlertUsersV2
-    @users = User.page(params[:page]).order('alerters_count DESC')
+    @users = User.page(params[:page]).order('alerters_count DESC').limit(100)
 
   #   @users = User.getHighAlertUsersV2
 
-    @users = User.find(:all, :include => Authors, :group_by => " SELECT `count` as (some subquery I don't know to get the number of followers)", :limit => 10)
+    #@users = User.find(:all, :include => Authors, :group_by => " SELECT `count` as (some subquery I don't know to get the number of followers)", :limit => 10)
 
     if (@users.nil? or @users.count == 0)
       render :json=>{:success => false, :message=>"fail to get hight alert user list"}
