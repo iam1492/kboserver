@@ -2,7 +2,7 @@ class Board < ActiveRecord::Base
   attr_accessible :title, :content, :imei, :id ,:photo, :board_type
   has_attached_file :photo, :styles => { :medium => "720x", :thumb => "100x100>" }
 
-  self.per_page = 10
+  self.per_page = 20
   acts_as_api
   acts_as_votable
   has_many :replies, dependent: :destroy
