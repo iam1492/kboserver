@@ -12,6 +12,17 @@ class UsersController < ApiController
     end
   end
 
+  def update
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
+
+    if (@user.save)
+      render :json=>{:success => true, :result_code => 0, :message=>"success to update user."}
+    else
+      render :json=>{:success => false, :result_code => 2, :message=>"fail to update user."}
+    end
+  end
+
   def destroy
     @user = User.getUserInfo(params[:imei])
     if @user.destroy

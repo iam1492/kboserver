@@ -12,36 +12,6 @@ class BoardsController < ApplicationController
 		end
 	end
 
-	# def deleteBoard
-	# 	@imei = params[:imei]
-	# 	@id = params[:id]
-
-	# 	if (!Board.exists?@id)
-	# 	  render :json=>{:success => false, :result_code => 2, :message=>"no board found"}
-	# 	  return
-	# 	end
-
-	# 	@board = Board.find(@id)
-		
-	# 	@requestUser = User.getUserInfo(@imei);
-
-	# 	if (@requestUser.nil?)
-	# 		render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
-	# 		return
-	# 	end
-
-	# 	if (@board.nil?)
-	# 		render :json=>{:success => false, :result_code => 2, :message=>"no board found"}
-	# 		return
-	# 	end
-
-	# 	if(@board.destroy)
-	# 		render :json=>{:success => true, :result_code => 0, :message=>"success to delete board."}
-	# 	else
-	# 		render :json=>{:success => false, :result_code => 2, :message=>"fails to delete board"}
-	# 	end
-	# end
-
 	def update
 		@board = Board.find(params[:id])
 		@board.update_attributes(params[:board])
@@ -68,7 +38,7 @@ class BoardsController < ApplicationController
 			render :json=>{:success => false, :result_code => 2, :message=>"no board found"}
 			return
 		end
-		
+
 		@requestUser = User.getUserInfo(@imei);
 		if (@requestUser.nil?)
 			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
@@ -154,7 +124,7 @@ class BoardsController < ApplicationController
 	    end
 	    metadata = {:success => true, :message=>"success to get replies."}
 		respond_with(@board, :api_template => :board_with_replies, :meta => metadata)
-	end
+	end	
 
 	def vote
 	    @id = params[:id]
