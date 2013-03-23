@@ -17,7 +17,11 @@ class UsersController < ApiController
     @profile = params[:profile]
     @intro = params[:intro]
     
-    @user.update_attributes(:profile => @profile, :intro => @intro) 
+    if (@profile.nil?)
+      @user.update_attributes(:intro => @intro) 
+    else
+      @user.update_attributes(:profile => @profile, :intro => @intro) 
+    end
 
     if (@user.save)
       render :json=>{:success => true, :result_code => 0, :message=>"success to update user."}
