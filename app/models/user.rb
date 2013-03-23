@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count, :profile
+  attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count, :profile, :intro
   has_attached_file :profile, :styles => { :medium => "720x", :thumb => "100x100>" }
 
   acts_as_api
@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
     t.add :profile_path
     t.add :profile_thumbnail_path
     t.add :profile_medium_path
+    t.add :intro
   end
 
   def alert!(other_user)

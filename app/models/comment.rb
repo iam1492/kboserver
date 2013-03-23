@@ -34,5 +34,11 @@ class Comment < ActiveRecord::Base
     t.add :is_broadcast
     t.add :homescore
     t.add :awayscore
+    t.add :userProfileThumbnail
+  end
+
+  def userProfileThumbnail
+    @user = User.getUserInfoByNickname(self.nickname)
+    @user.profile_thumbnail_path
   end
 end

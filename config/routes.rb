@@ -9,7 +9,7 @@ KboApi::Application.routes.draw do
   match 'users(.format)' => "users#destroy", :via => :delete
 
   match 'users/update(.format)' => "users#update", :via => :post
-  
+  match 'users/get_userinfo_by_nickname(.format)' => "users#getUserInfoByNickname", :via => :get 
   match 'users/get_userinfo(.format)' => "users#getUserInfo", :via => :get 
   match 'users/get_nickname_uniqueness(.format)' => "users#checkUniqueness", :via => :get 
   match 'users/block(.format)' => "users#blockUser", :via => :post  
