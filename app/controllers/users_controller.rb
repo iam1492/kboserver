@@ -24,7 +24,7 @@ class UsersController < ApiController
     end
 
     if (@user.save)
-      render :json=>{:success => true, :result_code => 0, :message=>"success to update user."}
+      render :json=>{:profile_thumbnail_path => @user.profile_thumbnail_path, :success => true, :result_code => 0, :message=>"success to update user."}
     else
       render :json=>{:success => false, :result_code => 2, :message=>"fail to update user."}
     end

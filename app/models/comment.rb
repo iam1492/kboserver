@@ -34,7 +34,7 @@ class Comment < ActiveRecord::Base
     t.add :is_broadcast
     t.add :homescore
     t.add :awayscore
-    t.add :userProfileThumbnail
+    #t.add :userProfileThumbnail
   end
 
   def userProfileThumbnail
