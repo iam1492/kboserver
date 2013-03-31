@@ -1,5 +1,6 @@
 class Article < ActiveRecord::Base
-  attr_accessible :article_url, :nickname, :title, :cached_votes_up, :alert_count, :created_at
+  attr_accessible :article_url, :nickname, :title,
+                  :cached_votes_up, :alert_count, :created_at, :imei
 
   acts_as_api
   acts_as_votable
@@ -30,10 +31,24 @@ class Article < ActiveRecord::Base
     t.add :alert_count
     t.add :likes_count
     t.add :created_at
+    t.add :imei
+    t.add :profile_thumbnail_url
   end
 
   def likes_count
     self.cached_votes_up
+  end
+
+  def profile_thumbnail_url
+    @user = User.getUserInfo(self.imei)
+    if (@user.nil?)
+      return ""
+    end
+
+    if (@user.profile.nil?)
+      return nil
+    end
+    @user.profile.url(:thumb)
   end
 
 end

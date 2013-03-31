@@ -11,20 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130317140443) do
+ActiveRecord::Schema.define(:version => 20130331012630) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
     t.string   "nickname"
     t.string   "article_url"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "like",               :default => 0
     t.integer  "alert_count",        :default => 0
     t.integer  "cached_votes_total", :default => 0
     t.integer  "cached_votes_score", :default => 0
     t.integer  "cached_votes_up",    :default => 0
     t.integer  "cached_votes_down",  :default => 0
+    t.string   "imei",               :default => ""
   end
 
   add_index "articles", ["cached_votes_down"], :name => "index_articles_on_cached_votes_down"
