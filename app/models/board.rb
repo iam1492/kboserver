@@ -26,6 +26,7 @@ class Board < ActiveRecord::Base
     t.add :photo_medium_path
     t.add :board_type
     t.add :is_voted
+    t.add :profile_thumbnail_url
   end
 
   api_accessible :board_with_replies do |t| 
@@ -43,6 +44,7 @@ class Board < ActiveRecord::Base
     t.add :photo_medium_path
     t.add :board_type
     t.add :is_voted
+    t.add :profile_thumbnail_url
   end
 
   def is_voted
@@ -57,6 +59,14 @@ class Board < ActiveRecord::Base
   def nickname
   	@user = User.getUserInfo(self.imei)
   	@user.nickname
+  end
+
+  def profile_thumbnail_url
+    @user = User.getUserInfo(self.imei)
+    if (@user.profile.nil?)
+      return nil
+    end
+    @user.profile.url(:thumb)
   end
 
   def likes_count
