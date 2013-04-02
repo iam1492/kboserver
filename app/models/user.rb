@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count, :profile, :intro
-  has_attached_file :profile, :styles => { :medium => "720x", :thumb => "100x100>" }
+  has_attached_file :profile, :styles => { :original => "400x400>", :medium => "200x200>", :thumb => "100x100>" }
 
   acts_as_api
   acts_as_voter

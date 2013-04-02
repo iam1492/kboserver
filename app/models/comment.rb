@@ -2,7 +2,7 @@ class Comment < ActiveRecord::Base
   attr_accessible :ball, :base, :comment, :extra_1, :extra_2,
   				  :game_id, :out_count, :stage, :strike, :team_idx,
   				  :comment_type, :created_at, :nickname, :id, :is_broadcast,
-            :homescore, :awayscore
+            :homescore, :awayscore, :imei
 
   acts_as_api
 
@@ -34,11 +34,22 @@ class Comment < ActiveRecord::Base
     t.add :is_broadcast
     t.add :homescore
     t.add :awayscore
-    #t.add :userProfileThumbnail
+    t.add :userProfileThumbnail
+    t.add :imei
   end
 
   def userProfileThumbnail
-    @user = User.getUserInfoByNickname(self.nickname)
+    
+    if (self.imei.nil?)
+      return ""
+    end
+    
+    @user = User.getUserInfo(self.imei);
+    
+    if (@user.nil?)
+      return ""
+    end
+
     @user.profile_thumbnail_path
   end
 end

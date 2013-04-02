@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130331012630) do
+ActiveRecord::Schema.define(:version => 20130402142613) do
 
   create_table "articles", :force => true do |t|
     t.string   "title"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20130331012630) do
     t.boolean  "is_broadcast", :default => false, :null => false
     t.integer  "homescore",    :default => 0
     t.integer  "awayscore",    :default => 0
+    t.string   "imei",         :default => ""
   end
 
   add_index "comments", ["game_id"], :name => "index_comments_on_game_id"

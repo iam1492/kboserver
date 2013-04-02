@@ -1,6 +1,6 @@
-class BoardsController < ApplicationController
-	respond_to :json, :xml
-	self.responder = ActsAsApi::Responder
+class BoardsController < ApiController
+	#respond_to :json, :xml
+	#self.responder = ActsAsApi::Responder
 
 	def create
 		@board = Board.new(params[:board])
@@ -94,7 +94,8 @@ class BoardsController < ApplicationController
 	end
 
 	def getBoards
-		@boards = Board.where("board_type = ?", params[:board_type]).page(params[:page]).order('created_at DESC')
+		@boards = Board.where("board_type=?", params[:board_type]).page(params[:page]).order('created_at DESC')
+		logger.debug @boards
 		if (@boards.nil?)
 			render :json=>{:success => false, :message=>"fail to get boards."}
 		else

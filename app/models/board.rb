@@ -1,6 +1,6 @@
 class Board < ActiveRecord::Base
   attr_accessible :title, :content, :imei, :id ,:photo, :board_type
-  has_attached_file :photo, :styles => { :medium => "720x", :thumb => "100x100>" }
+  has_attached_file :photo, :styles => { :original => "720x", :medium => "320x", :thumb => "100x100>" }
 
   self.per_page = 20
   acts_as_api
@@ -16,7 +16,6 @@ class Board < ActiveRecord::Base
   	t.add :title
   	t.add :content
   	t.add :total_replies
-    #t.add :replies
     t.add :nickname
     t.add :imei
     t.add :created_at
@@ -49,6 +48,9 @@ class Board < ActiveRecord::Base
 
   def is_voted
     @user = User.getUserInfo(self.imei)
+    if (@user.nil?)
+      return ""
+    end
     @user.voted_up_on?(self)
   end
 
@@ -58,11 +60,21 @@ class Board < ActiveRecord::Base
 
   def nickname
   	@user = User.getUserInfo(self.imei)
+
+    if (@user.nil?)
+      return ""
+    end
+
   	@user.nickname
   end
 
   def profile_thumbnail_url
     @user = User.getUserInfo(self.imei)
+
+    if (@user.nil?)
+      return ""
+    end
+    
     if (@user.profile.nil?)
       return nil
     end
