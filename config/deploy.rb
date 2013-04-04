@@ -38,10 +38,12 @@ set :scm, "git"
 set :repository, "git@github.com:iam1492/#{application}.git"
 set :branch, "master"
 
+set :keep_releases, 1
+
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
-after "deploy", "deploy:cleanup" # keep only the last 5 releases
+after "deploy", "deploy:cleanup" # keep only the last 1 releases
 
 namespace :deploy do
   %w[start stop restart].each do |command|
