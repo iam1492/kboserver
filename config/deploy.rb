@@ -26,7 +26,7 @@
 
 require "bundler/capistrano"
 
-server "14.63.219.193", :web, :app, :db, primary: true
+server "14.63.227.107", :web, :app, :db, primary: true
 
 set :application, "kboserver"
 set :user, "deployer"
