@@ -36,5 +36,7 @@ gem 'unicorn'
 # Deploy with Capistrano
 gem 'capistrano'
 
+gem 'dalli'
+
 # To use debugger
 # gem 'debugger'

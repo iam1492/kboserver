@@ -40,15 +40,21 @@ class Article < ActiveRecord::Base
   end
 
   def profile_thumbnail_url
-    @user = User.getUserInfo(self.imei)
+    
+    if (self.imei.nil?)
+      return ""
+    end
+    
+    @user = User.cachedUserInfo(self.imei)
+    if (@user.nil?)
+      @user = User.getUserInfo(self.imei);
+    end
+    
     if (@user.nil?)
       return ""
     end
 
-    if (@user.profile.nil?)
-      return nil
-    end
-    @user.profile.url(:thumb)
+    @user.profile_thumbnail_path
   end
 
 end
