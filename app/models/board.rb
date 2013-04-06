@@ -47,19 +47,10 @@ class Board < ActiveRecord::Base
   end
 
   def is_voted
-    if (self.imei.nil?)
-      return false
-    end
-    
-    @user = User.cachedUserInfo(self.imei)
+    @user = User.getUserInfo(self.imei)
     if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
+      return ""
     end
-    
-    if (@user.nil?)
-      return false
-    end
-
     @user.voted_up_on?(self)
   end
 
@@ -68,15 +59,8 @@ class Board < ActiveRecord::Base
   end
 
   def nickname
-  	if (self.imei.nil?)
-      return ""
-    end
-    
-    @user = User.cachedUserInfo(self.imei)
-    if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
-    end
-    
+  	@user = User.getUserInfo(self.imei)
+
     if (@user.nil?)
       return ""
     end
@@ -85,21 +69,16 @@ class Board < ActiveRecord::Base
   end
 
   def profile_thumbnail_url
-    
-    if (self.imei.nil?)
-      return ""
-    end
-    
-    @user = User.cachedUserInfo(self.imei)
-    if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
-    end
-    
-    if (@user.nil?)
-      return ""
-    end
+    @user = User.getUserInfo(self.imei)
 
-    @user.profile_thumbnail_path
+    if (@user.nil?)
+      return ""
+    end
+    
+    if (@user.profile.nil?)
+      return nil
+    end
+    @user.profile.url(:thumb)
   end
 
   def likes_count

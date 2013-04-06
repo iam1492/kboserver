@@ -1,9 +1,6 @@
 class User < ActiveRecord::Base
-  attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count, :profile, :intro, :updated_at
+  attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count, :profile, :intro
   has_attached_file :profile, :styles => { :original => "400x400>", :medium => "200x200>", :thumb => "100x100>" }
-
-  after_save    :expire_user_cache
-  after_destroy :expire_user_cache
 
   acts_as_api
   acts_as_voter
@@ -65,16 +62,6 @@ class User < ActiveRecord::Base
 
   def self.getUserInfo(_imei)
   	where("imei = ?", _imei).first
-  end
-
-  def self.cachedUserInfo(_imei)
-    Rails.cache.fetch("userinfo-#{_imei}") do
-      User.getUserInfo(_imei)
-    end
-  end
-
-  def expire_user_cache
-    Rails.cache.delete("userinfo-#{self.imei}")
   end
 
   def self.getUserInfoByNickname(_nickname)

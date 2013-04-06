@@ -1,8 +1,8 @@
-class Comment < ActiveRecord::Base  
+class Comment < ActiveRecord::Base
   attr_accessible :ball, :base, :comment, :extra_1, :extra_2,
   				  :game_id, :out_count, :stage, :strike, :team_idx,
   				  :comment_type, :created_at, :nickname, :id, :is_broadcast,
-            :homescore, :awayscore, :imei            
+            :homescore, :awayscore, :imei
 
   acts_as_api
 
@@ -17,12 +17,6 @@ class Comment < ActiveRecord::Base
   def self.getMoreComments(_createdAt, _teamIdx)
     where("created_at > ? AND team_idx = ?", _createdAt, _teamIdx)
   end
-
-  # def self.cachedGetComments(_game_id, _id, _max)
-  #   Rails.cache.fetch("cachedGetComments-#{_game_id}-#{_id}-#{_max}", :expires_in => 5.minutes) do
-  #     Comment.getComments(_game_id, _id, _max)
-  #   end
-  # end
 
   api_accessible :render_comments do |t|
     t.add :id
@@ -50,10 +44,7 @@ class Comment < ActiveRecord::Base
       return ""
     end
     
-    @user = User.cachedUserInfo(self.imei)
-    if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
-    end
+    @user = User.getUserInfo(self.imei);
     
     if (@user.nil?)
       return ""
