@@ -7,19 +7,38 @@ class Reply < ActiveRecord::Base
 
   def nickname
   	if (self.imei.nil?)
-  		"not valid user"
-  		return
-  	end
-  	@user = User.getUserInfo(self.imei);
+      return ""
+    end
+    
+    @user = User.cachedUserInfo(self.imei)
+    if (@user.nil?)
+      @user = User.getUserInfo(self.imei);
+    end
+    
+    if (@user.nil?)
+      return ""
+    end
+
   	@user.nickname
   end
 
   def profile_thumbnail_url
-    @user = User.getUserInfo(self.imei)
-    if (@user.profile.nil?)
-      return nil
+    
+    if (self.imei.nil?)
+      return ""
     end
-    @user.profile.url(:thumb)
+    
+    @user = User.cachedUserInfo(self.imei)
+    logger.debug @user
+    if (@user.nil?)
+      @user = User.getUserInfo(self.imei);
+    end
+    
+    if (@user.nil?)
+      return ""
+    end
+
+    @user.profile_thumbnail_path
   end
 
   def as_json options=nil
