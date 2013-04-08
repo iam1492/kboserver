@@ -20,6 +20,7 @@ KboApi::Application.routes.draw do
   match 'users/high_alert_usersv2(.format)' => "users#getHighAlertUsersV2", :vis => :get
   match 'users/get_all_users(.format)' => "users#getUserList", :via => :get
   match 'users/alert(.format)' => "users#alertUserV2", :via => :post  
+  match 'users/update_nickname(.format)' => "users#updateNickname", :via => :post  
 
   match 'update(.json)' => "updates#create", :via => :post
   match 'update/get_last_update(.json)' => "updates#getLastUpdate", :via => :get

@@ -189,6 +189,33 @@ class UsersController < ApiController
     end
   end
 
+  def updateNickname
+    @imei = params[:imei]
+    @new_nick_name = params[:nickname]
+
+    @user = User.getUserInfo(@imei)
+    
+    if (@user.nil?)
+      render :json=>{:success => false, :message=>"fail to change nickname. no user found"}
+      return      
+    end
+
+    if (@user.nick_count > 2)
+      render :json=>{:success => true, :result_code => 1, :message=>"max nick count"}
+      return
+    end
+
+    @new_nick_count = @user.nick_count + 1
+
+    if (@user.update_attributes(:nickname => @new_nick_name, :nick_count => @new_nick_count))
+      render :json=>{:success => true, :result_code => 0, :message=>"success to change nickname"}
+      return
+    else
+      render :json=>{:success => false, :result_code => 2, :message=>"fail to change nickname"}
+      return      
+    end
+  end
+
   
   # def alertUser
   #   @imei = params[:imei]

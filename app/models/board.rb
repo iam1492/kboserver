@@ -5,7 +5,7 @@ class Board < ActiveRecord::Base
   self.per_page = 20
   acts_as_api
   acts_as_votable
-  has_many :replies, dependent: :destroy
+  has_many :replies, dependent: :destroy, :order => "created_at DESC"
   
   validates :title, presence: true
   validates :content, presence: true
