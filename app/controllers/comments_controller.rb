@@ -21,9 +21,9 @@ class CommentsController < ApiController
     @id = params[:id]
 
     if @id.nil?
-      @comments = Comment.getFirstComments(@game_id, 50)
+      @comments = Comment.getFirstComments(@game_id, 200)
     else
-      @comments = Comment.getComments(@game_id, @id, 50)
+      @comments = Comment.getComments(@game_id, @id, 200)
     end
     
     metadata = {:success => true, :message=>"success to get comments."}
