@@ -40,7 +40,7 @@ class BoardsController < ApiController
 		end
 
 		@requestUser = User.getUserInfo(@imei);
-		if (@requestUser.nil?  || !(@board.imei.eql? "ekseo00")
+		if (@requestUser.nil?  || !(@board.imei.eql? "ekseo00"))
 			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
 			return
 		end
