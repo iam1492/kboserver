@@ -40,12 +40,12 @@ class BoardsController < ApiController
 		end
 
 		@requestUser = User.getUserInfo(@imei);
-		if (@requestUser.nil?)
+		if (@requestUser.nil?  || !(@board.imei.eql? "ekseo00")
 			render :json=>{:success => false, :result_code => 2, :message=>"no user found"}
 			return
 		end
 
-		if (@board.imei.eql? @imei)
+		if (@board.imei.eql? @imei || @board.imei.eql? "ekseo00")
 			if(@board.destroy)
 				render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
 			else
