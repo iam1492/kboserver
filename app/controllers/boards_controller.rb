@@ -47,7 +47,7 @@ class BoardsController < ApiController
 			return
 		end
 
-		if (@board.imei.eql? @imei || (@imei.eql? @developer))
+		if (@board.imei.eql?(@imei) || @imei.eql?(@developer))
 			if(@board.destroy)
 				render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
 			else
