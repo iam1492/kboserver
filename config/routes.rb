@@ -40,7 +40,8 @@ KboApi::Application.routes.draw do
   match 'boards/:id(.format)' => "boards#show", :via => :get, :constraints => {:id => /\d+/}
   match 'boards/vote(.format)' => "boards#vote", :via => :post
   match 'boards/get_boards(.format)' => "boards#getBoards", :via => :get
-  match 'boards/get_boards_by_like(.format)' => "boards#getBoardsByLike", :via => :get
+  match 'boards/get_boards_by_like(.format)' => "boards#getBoardsByLike", :via => :get  
+  match 'boards/get_all_board(.format)' => "boards#getAllBoards", :via => :get
   match 'boards/:id(.format)' => "boards#deleteBoard", :via => :delete, :constraints => {:id => /\d+/}
   match 'boards/dev/:id(.format)' => "boards#manageByDeveloper", :via => :delete, :constraints => {:id => /\d+/}
 

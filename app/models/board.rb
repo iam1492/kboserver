@@ -11,6 +11,13 @@ class Board < ActiveRecord::Base
   validates :content, presence: true
   validates :imei, presence: true
 
+  api_accessible :board_for_dev do |t| 
+    t.add :id
+    t.add :title
+    t.add :nickname
+    t.add :imei
+  end
+
   api_accessible :board_without_replies do |t| 
   	t.add :id
   	t.add :title

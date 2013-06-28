@@ -141,6 +141,16 @@ class BoardsController < ApiController
 		end
 	end
 
+	def getAllBoards
+		@boards = Board.page(params[:page]).order('created_at DESC')
+		if (@boards.nil?)
+			render :json=>{:success => false, :message=>"fail to get boards."}
+		else
+			metadata = {:success => true, :message=>"success to get boards."}
+			respond_with(@boards, :api_template => :board_for_dev, :root => :boards, :meta => metadata)
+		end
+	end
+
 	def show
 		@id = params[:id]
 		@board = Board.find(@id)
