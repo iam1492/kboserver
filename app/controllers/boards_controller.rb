@@ -23,6 +23,28 @@ class BoardsController < ApiController
 		end
 	end
 
+	def manageByDeveloper
+		@id = params[:id]
+		
+		if (!Board.exists?@id)
+		  render :json=>{:success => false, :result_code => 2, :message=>"no board found"}
+		  return
+		end
+
+		@board = Board.find(@id)
+
+		if (@board.nil?)
+			render :json=>{:success => false, :result_code => 2, :message=>"no board found"}
+			return
+		end
+
+		if(@board.destroy)
+			render :json=>{:success => true, :result_code => 0, :message=>"success to delete articles."}
+		else
+			render :json=>{:success => false, :result_code => 2, :message=>"fails to delete articles"}
+		end
+	end
+
 	def deleteBoard
 		@imei = params[:imei]
 		@id = params[:id]
