@@ -43,6 +43,7 @@ KboApi::Application.routes.draw do
   match 'boards/get_boards_by_like(.format)' => "boards#getBoardsByLike", :via => :get  
   match 'boards/get_all_board(.format)' => "boards#getAllBoards", :via => :get
   match 'boards/:id(.format)' => "boards#deleteBoard", :via => :delete, :constraints => {:id => /\d+/}
+  match 'boards/delete_board_by_imei(.format)' => "boards#deleteBoardByImei", :via => :delete
   match 'boards/dev/:id(.format)' => "boards#manageByDeveloper", :via => :delete, :constraints => {:id => /\d+/}
 
   match 'boards/add_reply(.format)' => "boards#add_reply", :via => :post

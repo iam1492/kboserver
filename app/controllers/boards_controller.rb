@@ -45,6 +45,12 @@ class BoardsController < ApiController
 		end
 	end
 
+	def deleteBoardByImei
+  		@imei = params[:imei]
+  		delCount = Board.delete_all(:imei => @imei)
+  		render :json=>{:success => true, :result_code => 0, :message=>"board deleted:#{delCount}" }
+  	end
+
 	def deleteBoard
 		@imei = params[:imei]
 		@id = params[:id]
