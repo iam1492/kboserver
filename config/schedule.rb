@@ -21,6 +21,18 @@
 
 set :output, "#{path}/log/cron.log"
 
-every 1.days do
+every 3.hours do
   rake 'fetch_chart'
+end
+
+every 5.minutes do
+  rake 'fetch_batter_rank'
+end
+
+every 6.minutes do
+  rake 'fetch_schedule'
+end
+
+every 4.minutes do
+  rake 'fetch_score'
 end
