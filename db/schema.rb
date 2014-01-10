@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131202153604) do
+ActiveRecord::Schema.define(version: 20140108002650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,30 @@ ActiveRecord::Schema.define(version: 20131202153604) do
   add_index "articles", ["cached_votes_score"], name: "index_articles_on_cached_votes_score", using: :btree
   add_index "articles", ["cached_votes_total"], name: "index_articles_on_cached_votes_total", using: :btree
   add_index "articles", ["cached_votes_up"], name: "index_articles_on_cached_votes_up", using: :btree
+
+  create_table "batters", force: true do |t|
+    t.string   "rank"
+    t.string   "player"
+    t.string   "team"
+    t.string   "game_count"
+    t.string   "play_count"
+    t.string   "bat_count"
+    t.string   "hit"
+    t.string   "b2"
+    t.string   "b3"
+    t.string   "hr"
+    t.string   "hit_score"
+    t.string   "own_score"
+    t.string   "stolen_base"
+    t.string   "dead_ball"
+    t.string   "out_count"
+    t.string   "heat_rate"
+    t.string   "run_rate"
+    t.string   "long_rate"
+    t.string   "ops"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "boards", force: true do |t|
     t.string   "title"
@@ -114,6 +138,34 @@ ActiveRecord::Schema.define(version: 20131202153604) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string   "imei"
+  end
+
+  create_table "schedules", force: true do |t|
+    t.string   "day"
+    t.string   "weak"
+    t.string   "home_team"
+    t.string   "home_score"
+    t.string   "away_score"
+    t.string   "away_team"
+    t.string   "start_time"
+    t.string   "tv_info"
+    t.string   "station"
+    t.boolean  "no_match"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "score_lists", force: true do |t|
+    t.string   "status"
+    t.string   "home_team"
+    t.string   "home_score"
+    t.string   "away_team"
+    t.string   "away_score"
+    t.string   "station"
+    t.string   "start_time"
+    t.string   "link"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "total_ranks", force: true do |t|

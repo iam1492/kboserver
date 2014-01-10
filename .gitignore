@@ -16,3 +16,11 @@
 /public/system
 
 /config/database.yml
+
+*.iml
+*.ipr
+*.iws
+.idea/
+
+/public/system
+/test

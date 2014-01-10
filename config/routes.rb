@@ -1,5 +1,6 @@
 KboApi::Application.routes.draw do
 
+  get "batters/chart"
   match 'comments(.format)' => 'comments#create', :via => :post
   match 'comments/:id(.format)' => 'comments#show', :via => :get, :constraints => {:id => /\d+/}
   match 'get_comments(.format)' => 'comments#getComments', :via => :get
@@ -51,5 +52,7 @@ KboApi::Application.routes.draw do
 
   #data api
   match 'ranks/chart(.format)' => 'ranks#chart', :via => :get
-  
+  match 'batters/chart(.format)' => 'batters#chart', :via => :get
+  match 'schedules/chart(.format)' => 'schedules#chart', :via => :get
+  match 'scorelist/chart(.format)' => 'score_lists#chart', :via => :get
 end
