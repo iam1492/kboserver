@@ -19,8 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :environment, 'development'
-set :output, '/Users/kai/script/cron_log.log'
+set :output, "#{path}/log/cron.log"
 
 every 1.minutes do
   rake 'fetch_chart'
