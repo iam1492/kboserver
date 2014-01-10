@@ -28,6 +28,9 @@ require "bundler/capistrano"
 
 server "14.63.227.107", :web, :app, :db, primary: true
 
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
+
 set :application, "kboserver"
 set :user, "deployer"
 set :deploy_to, "/home/#{user}/apps/#{application}"
