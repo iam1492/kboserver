@@ -64,7 +64,9 @@ task :fetch_chart => :environment do
   puts '============= fetch chart ============'
 
   details.each do |item|
-    @rank = Rank.find_by_team(item[:team])
+    team = item[:team];
+    puts 'update team %s' % team
+    @rank = Rank.find_by_team(team)
     puts @rank
     @rank.update_attributes(:rank => item[:rank], :game_count => item[:game_count], :win => item[:win],
                            :defeat => item[:defeat], :draw => item[:draw], :win_rate => item[:win_rate],
