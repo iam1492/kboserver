@@ -51,32 +51,38 @@ task :fetch_chart => :environment do
 	    [:team, 'td[@class="txt_league"]/a/text()'],
 	    [:game_count, 'td[3]/text()'],
 	    [:win, 'td[4]/text()'],
+      [:defeat, 'td[6]/text()'],
 	    [:draw, 'td[5]/text()'],
-	    [:defeat, 'td[6]/text()'],
 	    [:win_rate, 'td[7]/text()'],
 	    [:win_diff, 'td[8]/text()'],
-	    [:continue, 'td[9]/text()']
+	    [:continue, 'td[9]/text()'],
+      [:recent_game, 'td[9]/text()']
 	  ].each do |name, xpath|
     	detail[name] = row.at_xpath(xpath).to_s.strip
     end
   		detail
   end
   puts details
-  puts '============= fetch chart ============'
+  puts '============ delete all data ==========='
+  Rank.delete_all
 
+  puts '============ insert new data ==========='
   details.each do |item|
-    team = item[:team];
-    puts 'update team %s' % team
-    @rank = Rank.find_by_team(team)
-    puts @rank.team
-    result = @rank.update_attributes(:rank => item[:rank], :game_count => item[:game_count], :win => item[:win],
-                           :defeat => item[:defeat], :draw => item[:draw], :win_rate => item[:win_rate],
-                           :win_diff => item[:win_diff], :continue => item[:continue])
-    puts result
-    if (@rank.save)
-      puts 'success to update'
-    end
+    Rank.create!(item)
   end
+  #details.each do |item|
+  #  team = item[:team];
+  #  puts 'update team %s' % team
+  #  @rank = Rank.find_by_team(team)
+  #  puts @rank.team
+  #  result = @rank.update_attributes(:rank => item[:rank], :game_count => item[:game_count], :win => item[:win],
+  #                         :defeat => item[:defeat], :draw => item[:draw], :win_rate => item[:win_rate],
+  #                         :win_diff => item[:win_diff], :continue => item[:continue])
+  #  puts result
+  #  if (@rank.save)
+  #    puts 'success to update'
+  #  end
+  #end
 end
 
 task :fetch_batter_rank => :environment do
