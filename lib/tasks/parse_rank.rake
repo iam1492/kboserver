@@ -55,7 +55,7 @@ task :fetch_chart => :environment do
 	    [:draw, 'td[5]/text()'],
 	    [:win_rate, 'td[7]/text()'],
 	    [:win_diff, 'td[8]/text()'],
-	    [:continue, 'td[9]/text()'],
+	    [:win_continue, 'td[9]/text()'],
       [:recent_game, 'td[9]/text()']
 	  ].each do |name, xpath|
     	detail[name] = row.at_xpath(xpath).to_s.strip
