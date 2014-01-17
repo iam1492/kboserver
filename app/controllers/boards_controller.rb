@@ -1,6 +1,4 @@
 class BoardsController < ApiController
-	#respond_to :json, :xml
-	#self.responder = ActsAsApi::Responder
 
 	def create
 		@board = Board.new(params[:board])

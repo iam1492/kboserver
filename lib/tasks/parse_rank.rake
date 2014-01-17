@@ -1,5 +1,15 @@
 desc 'parse rank data'
 
+task :fetch_report => :environment do
+  require 'open-uri'
+  require 'nokogiri'
+  require 'feedzirra'
+  request_url = "http://rss.donga.com/sportsdonga/baseball.xml"
+  request_url2 = "http://mlbspecial.net/rss"
+  Report.update_from_feed(request_url)
+  Report.update_from_feed(request_url2)
+end
+
 task :fetch_score => :environment do
   require 'open-uri'
   require 'nokogiri'

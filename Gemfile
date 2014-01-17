@@ -37,6 +37,7 @@ gem 'capistrano', '~> 2.15'
 
 gem 'dalli'
 gem 'protected_attributes'
+gem 'feedzirra'
 
 # To use debugger
 # gem 'debugger'

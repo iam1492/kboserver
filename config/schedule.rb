@@ -36,3 +36,7 @@ end
 every 4.hours do
   rake 'fetch_score'
 end
+
+every :day, :at => '4:00am' do
+  rake 'fetch_report'
+end
