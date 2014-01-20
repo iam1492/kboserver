@@ -121,7 +121,7 @@ class Board < ActiveRecord::Base
   end
 
   def photo_thumbnail_path
-  	if (self.photo.nil?)
+  	if self.photo.nil?
   		return nil
   	end
   	self.photo.url(:thumb)

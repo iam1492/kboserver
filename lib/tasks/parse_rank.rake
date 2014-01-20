@@ -16,12 +16,13 @@ task :fetch_score => :environment do
   require 'date'
 
   strDate = Date.today.strftime('%Y.%m.%d')
-  requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=%s' % strDate
+  #requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=%s' % strDate
 
-  puts requestUrl
+  #test
+  requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=2013-10-05'
   doc = Nokogiri::HTML(open(requestUrl))
   rows = doc.xpath('//div[@id="contents"]/div[@class="smsScore"]')
-
+  puts rows.size
   details = rows.collect do |row|
     detail = {}
     [
@@ -32,9 +33,14 @@ task :fetch_score => :environment do
         [:away_score, 'p[@class="rightTeam"]/em[@class="score"]/text()'],
         [:station, 'p[@class="place"]/text()'],
         [:start_time, 'p[@class="place"]/span/text()'],
-        [:link, 'div[@class="btnSms"]/a[starts-with(@href, "/Schedule/BoxScore.aspx")]/@href']
+        [:link, 'div[@class="btnSms"]/a[starts-with(@href, "/Schedule/BoxScore.aspx")]/@href'],
+        [:base_url, 'http://www.koreabaseball.com']
     ].each do |name, xpath|
-      detail[name] = row.at_xpath(xpath).to_s.strip
+      if name.eql? :base_url
+        detail[name] = xpath
+      else
+        detail[name] = row.at_xpath(xpath).to_s.strip
+      end
     end
     detail
   end
@@ -145,7 +151,7 @@ task :fetch_schedule => :environment do
   require 'open-uri'
   require 'nokogiri'
 
-  doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum?game_year=2013&game_month=10'))
+  doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum?game_year=2013&game_month=09'))
   rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
   puts rows.length
   details = rows.collect do |row|
@@ -159,15 +165,17 @@ task :fetch_schedule => :environment do
         [:start_time, 'td[@class="cont_time"]/text()'],
         [:tv_info, 'td[@class="cont_info"]/text()'],
         [:station, 'td[@class="cont_area"]/text()'],
-        [:no_match, 'td[@class="txt_empty"]/text()']
-
+        [:no_match, 'td[@class="txt_empty"]/text()'],
+        [:game_relay_url, ''],
+        [:game_record_url,'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_result"]/@href'],
+        [:is_canceled, 'td[@class="cont_score"]/span[@class="ico_comm3 ico_cancel"]/text()']
     ].each do |name, xpath|
-        if name.eql?(:no_match)
-          no_match = row.at_xpath(xpath).nil?
-          if no_match
-            detail[name] = false
-          else
+        if name.eql?(:no_match)  || name.eql?(:is_canceled)
+          has_field = !row.at_xpath(xpath).nil?
+          if has_field
             detail[name] = true
+          else
+            detail[name] = false
           end
         elsif name.eql?(:score)
           score = row.css(xpath).text
@@ -177,15 +185,27 @@ task :fetch_schedule => :environment do
 
           detail['home_score'] = homeScore.strip
           detail['away_score'] = awayScore.strip
+        elsif name.eql?(:game_relay_url)
+          xpath_text = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_text"]/@href'
+          xpath_cast = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_caster"]/@href'
+
+          value_text = row.at_xpath(xpath_text).to_s
+          value_cast = row.at_xpath(xpath_cast).to_s
+
+          if (value_text.length != 0)
+            detail[name] = value_text
+          else
+            detail[name] = value_cast
+          end
         else
           detail[name] = row.at_xpath(xpath).to_s
         end
       end
       detail
   end
-  puts details
+  #puts details
   puts '============ delete all data ==========='
-  Schedule.delete_all
+    Schedule.delete_all
 
   puts '============ insert new data ==========='
   details.each do |item|

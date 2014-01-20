@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140115075543) do
+ActiveRecord::Schema.define(version: 20140118000141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,9 @@ ActiveRecord::Schema.define(version: 20140115075543) do
     t.boolean  "no_match"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "game_record_url", default: ""
+    t.string   "game_relay_url",  default: ""
+    t.boolean  "is_canceled",     default: false
   end
 
   create_table "score_lists", force: true do |t|
