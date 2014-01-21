@@ -9,12 +9,15 @@ class User < ActiveRecord::Base
   acts_as_voter
   #acts_as_votable
 
-  has_many :relationships, foreign_key: "alerter_id", dependent: :destroy
+  has_many :relationships, foreign_key: 'alerter_id', dependent: :destroy
   has_many :alerted_users, through: :relationships, source: :alerted
-  has_many :reverse_relationships, foreign_key: "alerted_id",
-                                   class_name: "Relationship",
+  has_many :reverse_relationships, foreign_key: 'alerted_id',
+                                   class_name: 'Relationship',
                                    dependent: :destroy
   has_many :alerters, through: :reverse_relationships, source: :alerter
+
+  has_many :alerts, dependent: :destroy
+  has_many :boards, :through => :alerts
 
   api_accessible :render_users do |t|
     t.add :id
@@ -64,7 +67,7 @@ class User < ActiveRecord::Base
   end
 
   def self.getUserInfo(_imei)
-  	where("imei = ?", _imei).first
+  	where('imei = ?', _imei).first
   end
 
   def self.cachedUserInfo(_imei)
@@ -78,11 +81,11 @@ class User < ActiveRecord::Base
   end
 
   def self.getUserInfoByNickname(_nickname)
-    where("nickname = ?", _nickname).first
+    where('nickname = ?', _nickname).first
   end
 
   def self.uniqueNickname?(_nickname)
-    nickname = where("nickname = ?", _nickname).first
+    nickname = where('nickname = ?', _nickname).first
     if (nickname.nil?)
       return true
     else
@@ -95,10 +98,10 @@ class User < ActiveRecord::Base
   # end
 
   def self.getBlockedUsers
-    where("blocked = ?", true).order('cached_votes_down desc')
+    where('blocked = ?', true).order('cached_votes_down desc')
   end
 
   def self.getHighAlertUsers
-    order("cached_votes_down desc").limit(50)
+    order('cached_votes_down desc').limit(50)
   end
 end

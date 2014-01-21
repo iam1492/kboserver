@@ -1,12 +1,14 @@
 class Board < ActiveRecord::Base
-  attr_accessible :title, :content, :imei, :id ,:photo, :board_type
+  attr_accessible :title, :content, :imei, :id, :photo, :board_type
   has_attached_file :photo, :styles => { :original => "720x", :medium => "320x", :thumb => "100x100>" }
 
   self.per_page = 20
   acts_as_api
   acts_as_votable
   has_many :replies, dependent: :destroy, :order => "created_at ASC"
-  
+  has_many :alerts, dependent: :destroy
+  has_many :users, :through => :alerts
+
   validates :title, presence: true
   validates :content, presence: true
   validates :imei, presence: true
@@ -33,6 +35,7 @@ class Board < ActiveRecord::Base
     t.add :board_type
     t.add :is_voted
     t.add :profile_thumbnail_url
+    t.add :alert_count
   end
 
   api_accessible :board_with_replies do |t| 
@@ -51,6 +54,7 @@ class Board < ActiveRecord::Base
     t.add :board_type
     t.add :is_voted
     t.add :profile_thumbnail_url
+    t.add :alert_count
   end
 
   def is_voted
@@ -58,16 +62,16 @@ class Board < ActiveRecord::Base
       return false
     end
     
-    @user = User.cachedUserInfo(self.imei)
-    if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
+    user = User.cachedUserInfo(self.imei)
+    if (user.nil?)
+      user = User.getUserInfo(self.imei);
     end
     
-    if (@user.nil?)
+    if (user.nil?)
       return false
     end
 
-    @user.voted_up_on?(self)
+    user.voted_up_on?(self)
   end
 
   def total_replies
@@ -75,38 +79,38 @@ class Board < ActiveRecord::Base
   end
 
   def nickname
-  	if (self.imei.nil?)
-      return ""
+  	if self.imei.nil?
+      return ''
     end
     
-    @user = User.cachedUserInfo(self.imei)
-    if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
+    user = User.cachedUserInfo(self.imei)
+    if user.nil?
+      user = User.getUserInfo(self.imei)
     end
     
-    if (@user.nil?)
-      return ""
+    if user.nil?
+      return ''
     end
 
-  	@user.nickname
+  	user.nickname
   end
 
   def profile_thumbnail_url
     
     if (self.imei.nil?)
-      return ""
+      return ''
     end
     
-    @user = User.cachedUserInfo(self.imei)
-    if (@user.nil?)
-      @user = User.getUserInfo(self.imei);
+    user = User.cachedUserInfo(self.imei)
+    if user.nil?
+      user = User.getUserInfo(self.imei);
     end
     
-    if (@user.nil?)
-      return ""
+    if user.nil?
+      return ''
     end
 
-    @user.profile_thumbnail_path
+    user.profile_thumbnail_path
   end
 
   def likes_count
@@ -114,7 +118,7 @@ class Board < ActiveRecord::Base
   end
 
   def photo_path
-  	if (self.photo.nil?)
+  	if self.photo.nil?
   		return nil
   	end
   	self.photo.url
@@ -128,9 +132,26 @@ class Board < ActiveRecord::Base
   end
 
   def photo_medium_path
-  	if (self.photo.nil?)
+  	if self.photo.nil?
   		return nil
   	end
   	self.photo.url(:medium)  	
   end
+
+  def alerting? (imei)
+    alerts.find_by_user_imei(imei)
+  end
+
+  def alert_count
+    self.alerts.all.length
+  end
+
+  def alert! (imei)
+    alerts.create!(user_imei: imei)
+    savedAlerts = self.alerts
+    if savedAlerts.length >= 10
+      self.destroy!
+    end
+  end
+
 end

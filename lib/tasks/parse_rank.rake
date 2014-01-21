@@ -101,12 +101,76 @@ task :fetch_chart => :environment do
   #end
 end
 
+task :fetch_total_rank => :environment do
+  require 'open-uri'
+  require 'nokogiri'
+
+  doc = Nokogiri::HTML(open('http://www.koreabaseball.com/Record/PitcherTop5.aspx'))
+  rows = doc.xpath('//div[@class="top5"]/div/ol[@class="rankList"]')
+  details = []
+  rows.each_with_index do |row, index|
+    innerRows = row.xpath('li')
+    players = ""
+    values = ""
+    detail = {}
+    innerRows.each_with_index do |innerRow, innerIndex|
+
+      players += innerRow.at_xpath('a/text()').to_s.strip
+      values += innerRow.at_xpath('span/text()').to_s.strip
+
+      if (innerIndex < innerRows.length - 1)
+        players += ','
+        values += ','
+      end
+    end
+    detail['category'] = 0
+    detail['sub_category'] = index
+    detail['players'] = players
+    detail['values'] = values
+    details << detail
+  end
+
+  doc = Nokogiri::HTML(open('http://www.koreabaseball.com/Record/HitterTop5.aspx'))
+  rows = doc.xpath('//div[@class="top5"]/div/ol[@class="rankList"]')
+  rows.each_with_index do |row, index|
+    innerRows = row.xpath('li')
+    players = ""
+    values = ""
+    detail = {}
+    innerRows.each_with_index do |innerRow, innerIndex|
+
+      players += innerRow.at_xpath('a/text()').to_s.strip
+      values += innerRow.at_xpath('span/text()').to_s.strip
+
+      if (innerIndex < innerRows.length - 1)
+        players += ','
+        values += ','
+      end
+    end
+    detail['category'] = 1
+    detail['sub_category'] = index
+    detail['players'] = players
+    detail['values'] = values
+    details << detail
+  end
+  puts details
+
+  puts '============ delete all data ==========='
+  TotalRank.delete_all
+
+  puts '============ insert new data ==========='
+  details.each do |item|
+    TotalRank.create!(item)
+  end
+end
+
 task :fetch_batter_rank => :environment do
   require 'open-uri'
   require 'nokogiri'
 
   doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/record/baseball/kbo/brnk.daum'))
   rows = doc.xpath('//table[@id="table1"]/tbody/tr')
+
   puts '============ start parsing data ==========='
   details = rows.collect do |row|
     detail = {}
@@ -137,7 +201,6 @@ task :fetch_batter_rank => :environment do
     detail
   end
 
-  puts details[0].class
   puts '============ delete all data ==========='
   Batter.delete_all
 
@@ -213,43 +276,43 @@ task :fetch_schedule => :environment do
   end
 end
 
-task :fetch_total_rank => :environment do
-  require 'open-uri'
-  require 'nokogiri'
-
-  doc = Nokogiri::HTML(open('http://sports.media.daum.net/baseball/kbo/record/main.daum'))
-  rows = doc.xpath('//ul[@class="player_list"]/li')
-
-  rows.each_with_index do |row, index|
-    row.at_xpath()
-  end
-  details = rows.collect do |row|
-    detail = {}
-    [
-        [:rank, 'td[2]/text()'],
-        [:player, 'td[3]/em/a/text()'],
-        [:gp, 'td[4]/text()'],
-        [:ab, 'td[5]/text()'],
-        [:r, 'td[6]/text()'],
-        [:hit, 'td[7]/text()'],
-        [:b2, 'td[8]/text()'],
-        [:b3, 'td[9]/text()'],
-        [:hr, 'td[10]/text()'],
-        [:rbi, 'td[11]/text()'],
-        [:sb, 'td[12]/text()'],
-        [:bb, 'td[13]/text()'],
-        [:so, 'td[14]/text()'],
-        [:avg, 'td[15]/text()'],
-        [:slg, 'td[16]/text()'],
-        [:obp, 'td[17]/text()'],
-        [:ops, 'td[18]/text()']
-
-    ].each do |name, xpath|
-      detail[name] = row.at_xpath(xpath).to_s.strip
-    end
-    detail
-  end
-
-  puts details
-
-end
+#task :fetch_total_rank => :environment do
+#  require 'open-uri'
+#  require 'nokogiri'
+#
+#  doc = Nokogiri::HTML(open('http://sports.media.daum.net/baseball/kbo/record/main.daum'))
+#  rows = doc.xpath('//ul[@class="player_list"]/li')
+#
+#  rows.each_with_index do |row, index|
+#    row.at_xpath()
+#  end
+#  details = rows.collect do |row|
+#    detail = {}
+#    [
+#        [:rank, 'td[2]/text()'],
+#        [:player, 'td[3]/em/a/text()'],
+#        [:gp, 'td[4]/text()'],
+#        [:ab, 'td[5]/text()'],
+#        [:r, 'td[6]/text()'],
+#        [:hit, 'td[7]/text()'],
+#        [:b2, 'td[8]/text()'],
+#        [:b3, 'td[9]/text()'],
+#        [:hr, 'td[10]/text()'],
+#        [:rbi, 'td[11]/text()'],
+#        [:sb, 'td[12]/text()'],
+#        [:bb, 'td[13]/text()'],
+#        [:so, 'td[14]/text()'],
+#        [:avg, 'td[15]/text()'],
+#        [:slg, 'td[16]/text()'],
+#        [:obp, 'td[17]/text()'],
+#        [:ops, 'td[18]/text()']
+#
+#    ].each do |name, xpath|
+#      detail[name] = row.at_xpath(xpath).to_s.strip
+#    end
+#    detail
+#  end
+#
+#  puts details
+#
+#end

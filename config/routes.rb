@@ -48,6 +48,7 @@ KboApi::Application.routes.draw do
   match 'boards/dev/:id(.format)' => 'boards#manageByDeveloper', :via => :delete, :constraints => {:id => /\d+/}
 
   match 'boards/add_reply(.format)' => 'boards#add_reply', :via => :post
+  match 'boards/alert(.format)' => 'boards#alert', :via => :post
   #match 'articles/delete_all(.json)' => 'articles#deleteAllArticles', :vis => :post
 
   #data api
@@ -56,4 +57,5 @@ KboApi::Application.routes.draw do
   match 'schedules/chart(.format)' => 'schedules#chart', :via => :get
   match 'scorelist/chart(.format)' => 'score_lists#chart', :via => :get
   match 'reports/chart(.format)' => 'reports#list', :via => :get
+  match 'totalrank/chart(.format)' => 'total_ranks#chart', :via => :get
 end

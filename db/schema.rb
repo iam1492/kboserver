@@ -11,17 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140118000141) do
+ActiveRecord::Schema.define(version: 20140121023959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alerts", force: true do |t|
+    t.string   "user_imei"
+    t.integer  "board_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "alerts", ["board_id"], name: "index_alerts_on_board_id", using: :btree
+  add_index "alerts", ["user_imei", "board_id"], name: "index_alerts_on_user_imei_and_board_id", unique: true, using: :btree
+  add_index "alerts", ["user_imei"], name: "index_alerts_on_user_imei", using: :btree
 
   create_table "articles", force: true do |t|
     t.string   "title"
     t.string   "nickname"
     t.string   "article_url"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "like",               default: 0
     t.integer  "alert_count",        default: 0
     t.integer  "cached_votes_total", default: 0
@@ -64,8 +75,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
     t.string   "title"
     t.text     "content"
     t.string   "imei"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "cached_votes_total", default: 0
     t.integer  "cached_votes_score", default: 0
     t.integer  "cached_votes_up",    default: 0
@@ -95,8 +106,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
     t.string   "comment_type", default: ""
     t.string   "extra_1"
     t.string   "extra_2"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "nickname",     default: "",    null: false
     t.boolean  "is_broadcast", default: false, null: false
     t.integer  "homescore",    default: 0
@@ -124,8 +135,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
   create_table "relationships", force: true do |t|
     t.integer  "alerter_id"
     t.integer  "alerted_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "relationships", ["alerted_id"], name: "index_relationships_on_alerted_id", using: :btree
@@ -135,8 +146,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
   create_table "replies", force: true do |t|
     t.string   "content"
     t.integer  "board_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "imei"
   end
 
@@ -182,12 +193,10 @@ ActiveRecord::Schema.define(version: 20140118000141) do
   end
 
   create_table "total_ranks", force: true do |t|
-    t.integer  "rank_type"
-    t.integer  "rank"
-    t.string   "name"
-    t.string   "team"
-    t.string   "number"
-    t.string   "profile_image_url"
+    t.integer  "category"
+    t.integer  "sub_category"
+    t.string   "players",      default: ""
+    t.string   "values",       default: ""
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -196,8 +205,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
     t.string   "content"
     t.integer  "version"
     t.string   "extra"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
@@ -207,8 +216,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
     t.integer  "alert_count",          default: 0
     t.integer  "nick_count",           default: 0
     t.integer  "user_type",            default: 0
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "cached_votes_total",   default: 0
     t.integer  "cached_votes_score",   default: 0
     t.integer  "cached_votes_up",      default: 0
@@ -235,8 +244,8 @@ ActiveRecord::Schema.define(version: 20140118000141) do
     t.string   "voter_type"
     t.boolean  "vote_flag"
     t.string   "vote_scope"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "votes", ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope", using: :btree
