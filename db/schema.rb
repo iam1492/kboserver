@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140121023959) do
+ActiveRecord::Schema.define(version: 20140203224453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -192,13 +192,36 @@ ActiveRecord::Schema.define(version: 20140121023959) do
     t.datetime "updated_at"
   end
 
-  create_table "total_ranks", force: true do |t|
-    t.integer  "category"
-    t.integer  "sub_category"
-    t.string   "players",      default: ""
-    t.string   "values",       default: ""
+  create_table "team_infos", force: true do |t|
+    t.integer  "team_id"
+    t.integer  "total_score",   default: 0
+    t.integer  "total_loss",    default: 0
+    t.float    "total_avg",     default: 0.0
+    t.integer  "total_hit",     default: 0
+    t.integer  "total_hr",      default: 0
+    t.integer  "total_rb",      default: 0
+    t.integer  "total_outcout", default: 0
+    t.integer  "total_failure", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "total_hitter_ranks", force: true do |t|
+    t.string   "profile_img", default: ""
+    t.integer  "category"
+    t.string   "players",     default: ""
+    t.string   "values",      default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "total_ranks", force: true do |t|
+    t.integer  "category"
+    t.string   "players",     default: ""
+    t.string   "values",      default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "profile_img", default: ""
   end
 
   create_table "updates", force: true do |t|

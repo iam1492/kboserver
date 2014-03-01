@@ -53,6 +53,55 @@ task :fetch_score => :environment do
   end
 end
 
+task :fetch_team_info, [:team_num] => :environment do |t, args|
+  require 'open-uri'
+  require 'nokogiri'
+  team_id = args[:team_num]
+  requestUrl = 'http://score.sports.media.daum.net/record/baseball/kbo/tinf_main.daum?team_id=%s' % team_id
+
+  doc = Nokogiri::HTML(open(requestUrl))
+
+  rows = doc.xpath('//table[@class="tbl_record tbl_season"]/tbody/tr')
+
+  details = rows.collect do |row|
+    detail = {}
+    [
+        [:total_score, 'td[7]/text()'],
+        [:total_loss, 'td[8]/text()'],
+        [:total_avg, 'td[9]/text()'],
+        [:total_hit, 'td[10]/text()'],
+        [:total_hr, 'td[11]/text()'],
+        [:total_rb, 'td[12]/text()'],
+        [:total_outcout, 'td[13]/text()'],
+        [:total_failure, 'td[15]/text()'],
+        [:team_id, '']
+    ].each do |name, xpath|
+      if name.eql?(:team_id)
+        detail[name] = team_id.to_i
+      elsif name.eql?(:total_avg)
+        strValue = row.at_xpath(xpath).to_s.strip
+        detail[name] = strValue.to_f
+      else
+        strValue = row.at_xpath(xpath).to_s.strip
+        detail[name] = strValue.to_i
+      end
+    end
+    detail
+  end
+  puts details[0]
+
+  teamInfo = TeamInfo.find_or_initialize_by_team_id(details[0][:team_id])
+  teamInfo.update_attributes(details[0])
+
+  #puts '============ delete all data ==========='
+  #Rank.delete_all
+  #
+  #puts '============ insert new data ==========='
+  #details.each do |item|
+  #  Rank.create!(item)
+  #end
+
+end
 task :fetch_chart => :environment do
 	require 'open-uri'
 	require 'nokogiri'
@@ -86,22 +135,9 @@ task :fetch_chart => :environment do
   details.each do |item|
     Rank.create!(item)
   end
-  #details.each do |item|
-  #  team = item[:team];
-  #  puts 'update team %s' % team
-  #  @rank = Rank.find_by_team(team)
-  #  puts @rank.team
-  #  result = @rank.update_attributes(:rank => item[:rank], :game_count => item[:game_count], :win => item[:win],
-  #                         :defeat => item[:defeat], :draw => item[:draw], :win_rate => item[:win_rate],
-  #                         :win_diff => item[:win_diff], :continue => item[:continue])
-  #  puts result
-  #  if (@rank.save)
-  #    puts 'success to update'
-  #  end
-  #end
 end
 
-task :fetch_total_rank => :environment do
+task :fetch_pitcher_total_rank => :environment do
   require 'open-uri'
   require 'nokogiri'
 
@@ -110,8 +146,8 @@ task :fetch_total_rank => :environment do
   details = []
   rows.each_with_index do |row, index|
     innerRows = row.xpath('li')
-    players = ""
-    values = ""
+    players = ''
+    values = ''
     detail = {}
     innerRows.each_with_index do |innerRow, innerIndex|
 
@@ -123,37 +159,11 @@ task :fetch_total_rank => :environment do
         values += ','
       end
     end
-    detail['category'] = 0
-    detail['sub_category'] = index
+    detail['category'] = index
     detail['players'] = players
     detail['values'] = values
     details << detail
   end
-
-  doc = Nokogiri::HTML(open('http://www.koreabaseball.com/Record/HitterTop5.aspx'))
-  rows = doc.xpath('//div[@class="top5"]/div/ol[@class="rankList"]')
-  rows.each_with_index do |row, index|
-    innerRows = row.xpath('li')
-    players = ""
-    values = ""
-    detail = {}
-    innerRows.each_with_index do |innerRow, innerIndex|
-
-      players += innerRow.at_xpath('a/text()').to_s.strip
-      values += innerRow.at_xpath('span/text()').to_s.strip
-
-      if (innerIndex < innerRows.length - 1)
-        players += ','
-        values += ','
-      end
-    end
-    detail['category'] = 1
-    detail['sub_category'] = index
-    detail['players'] = players
-    detail['values'] = values
-    details << detail
-  end
-  puts details
 
   puts '============ delete all data ==========='
   TotalRank.delete_all
@@ -161,6 +171,46 @@ task :fetch_total_rank => :environment do
   puts '============ insert new data ==========='
   details.each do |item|
     TotalRank.create!(item)
+  end
+end
+
+task :fetch_batter_total_rank => :environment do
+  require 'open-uri'
+  require 'nokogiri'
+
+  doc = Nokogiri::HTML(open('http://www.koreabaseball.com/Record/HitterTop5.aspx'))
+  rows = doc.xpath('//div[@class="top5"]/div/ol[@class="rankList"]')
+  details = []
+  rows.each_with_index do |row, index|
+    innerRows = row.xpath('li')
+    players = ''
+    values = ''
+    detail = {}
+    innerRows.each_with_index do |innerRow, innerIndex|
+
+      players += innerRow.at_xpath('a/text()').to_s.strip
+      values += innerRow.at_xpath('span/text()').to_s.strip
+
+      if (innerIndex < innerRows.length - 1)
+        players += ','
+        values += ','
+      end
+    end
+
+    #defail['profile_img'] =
+    detail['category'] = index
+    detail['players'] = players
+    detail['values'] = values
+    details << detail
+  end
+  puts details
+
+  puts '============ delete all data ==========='
+  TotalHitterRank.delete_all
+
+  puts '============ insert new data ==========='
+  details.each do |item|
+    TotalHitterRank.create!(item)
   end
 end
 

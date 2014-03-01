@@ -1,0 +1,2 @@
+module TotalHitterRanksHelper
+end
