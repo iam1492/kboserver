@@ -197,7 +197,7 @@ task :fetch_batter_total_rank => :environment do
       end
     end
 
-    #defail['profile_img'] =
+    detail['profile_img'] = row.at_xpath('../p/img/@src').to_s.strip
     detail['category'] = index
     detail['players'] = players
     detail['values'] = values
