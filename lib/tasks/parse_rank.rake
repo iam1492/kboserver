@@ -305,7 +305,6 @@ task :fetch_pitcher_rank => :environment do
     detail
   end
 
-  puts details
   puts '============ delete all data ==========='
   Pitcher.delete_all
 

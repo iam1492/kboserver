@@ -25,10 +25,6 @@ every 6.hours do
   rake 'fetch_chart'
 end
 
-every 6.hours do
-  rake 'fetch_batter_rank'
-end
-
 every 1.day do
   rake 'fetch_schedule'
 end
@@ -47,4 +43,12 @@ end
 
 every :day, :at => '4:10am' do
   rake 'fetch_pitcher_total_rank'
+end
+
+every :day, :at => '4:15am' do
+  rake 'fetch_batter_rank'
+end
+
+every :day, :at => '4:20am' do
+  rake 'fetch_pitcher_rank'
 end
