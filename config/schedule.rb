@@ -41,6 +41,10 @@ every :day, :at => '4:00am' do
   rake 'fetch_report'
 end
 
-every :day, :at => '4:00am' do
+every :day, :at => '4:05am' do
   rake 'fetch_batter_total_rank'
+end
+
+every :day, :at => '4:10am' do
+  rake 'fetch_pitcher_total_rank'
 end
