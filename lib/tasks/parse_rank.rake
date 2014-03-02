@@ -159,6 +159,7 @@ task :fetch_pitcher_total_rank => :environment do
         values += ','
       end
     end
+    detail['profile_img'] = row.at_xpath('../p/img/@src').to_s.strip
     detail['category'] = index
     detail['players'] = players
     detail['values'] = values
@@ -203,7 +204,6 @@ task :fetch_batter_total_rank => :environment do
     detail['values'] = values
     details << detail
   end
-  puts details
 
   puts '============ delete all data ==========='
   TotalHitterRank.delete_all
@@ -257,6 +257,61 @@ task :fetch_batter_rank => :environment do
   puts '============ insert new data ==========='
   details.each do |item|
      Batter.create!(item)
+  end
+end
+
+task :fetch_pitcher_rank => :environment do
+  require 'open-uri'
+  require 'nokogiri'
+
+  doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/record/baseball/kbo/prnk.daum'))
+  rows = doc.xpath('//table[@id="table1"]/tbody/tr')
+
+  puts '============ start parsing data ==========='
+  details = rows.collect do |row|
+    detail = {}
+    [
+        [:rank, 'td[@class="num_rank"]/text()'],
+        [:player, 'td[@class="txt_league"]/a/text()'],
+        [:team, 'td[@class="txt_league"]/a/text()'],
+        [:game_count, 'td[3]/text()'],
+        [:win, 'td[4]/text()'],
+        [:lose, 'td[5]/text()'],
+        [:save_point, 'td[6]/text()'],
+        [:hold, 'td[7]/text()'],
+        [:inning, 'td[8]/text()'],
+        [:ball_count, 'td[9]/text()'],
+        [:hit_count, 'td[10]/text()'],
+        [:hr_count, 'td[11]/text()'],
+        [:out_count, 'td[12]/text()'],
+        [:dead_ball, 'td[13]/text()'],
+        [:total_lost_score, 'td[14]/text()'],
+        [:lost_score, 'td[15]/text()'],
+        [:avg_lost_score, 'td[16]/text()'],
+        [:whip, 'td[17]/text()'],
+        [:qs, 'td[18]/text()']
+
+    ].each do |name, xpath|
+      if name.eql?(:player)
+        player_team = row.at_xpath(xpath).to_s.strip
+        detail[name] = player_team.split.first
+      elsif name.eql?(:team)
+        player_team = row.at_xpath(xpath).to_s.strip
+        detail[name] = player_team.split.last
+      else
+        detail[name] = row.at_xpath(xpath).to_s.strip
+      end
+    end
+    detail
+  end
+
+  puts details
+  puts '============ delete all data ==========='
+  Pitcher.delete_all
+
+  puts '============ insert new data ==========='
+  details.each do |item|
+    Pitcher.create!(item)
   end
 end
 
@@ -326,43 +381,3 @@ task :fetch_schedule => :environment do
   end
 end
 
-#task :fetch_total_rank => :environment do
-#  require 'open-uri'
-#  require 'nokogiri'
-#
-#  doc = Nokogiri::HTML(open('http://sports.media.daum.net/baseball/kbo/record/main.daum'))
-#  rows = doc.xpath('//ul[@class="player_list"]/li')
-#
-#  rows.each_with_index do |row, index|
-#    row.at_xpath()
-#  end
-#  details = rows.collect do |row|
-#    detail = {}
-#    [
-#        [:rank, 'td[2]/text()'],
-#        [:player, 'td[3]/em/a/text()'],
-#        [:gp, 'td[4]/text()'],
-#        [:ab, 'td[5]/text()'],
-#        [:r, 'td[6]/text()'],
-#        [:hit, 'td[7]/text()'],
-#        [:b2, 'td[8]/text()'],
-#        [:b3, 'td[9]/text()'],
-#        [:hr, 'td[10]/text()'],
-#        [:rbi, 'td[11]/text()'],
-#        [:sb, 'td[12]/text()'],
-#        [:bb, 'td[13]/text()'],
-#        [:so, 'td[14]/text()'],
-#        [:avg, 'td[15]/text()'],
-#        [:slg, 'td[16]/text()'],
-#        [:obp, 'td[17]/text()'],
-#        [:ops, 'td[18]/text()']
-#
-#    ].each do |name, xpath|
-#      detail[name] = row.at_xpath(xpath).to_s.strip
-#    end
-#    detail
-#  end
-#
-#  puts details
-#
-#end

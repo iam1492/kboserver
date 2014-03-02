@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140203224453) do
+ActiveRecord::Schema.define(version: 20140302012050) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,6 +116,30 @@ ActiveRecord::Schema.define(version: 20140203224453) do
   end
 
   add_index "comments", ["game_id"], name: "index_comments_on_game_id", using: :btree
+
+  create_table "pitchers", force: true do |t|
+    t.string   "rank"
+    t.string   "player"
+    t.string   "team"
+    t.string   "game_count"
+    t.string   "win"
+    t.string   "lose"
+    t.string   "save_point"
+    t.string   "hold"
+    t.string   "inning"
+    t.string   "ball_count"
+    t.string   "hit_count"
+    t.string   "hr_count"
+    t.string   "out_count"
+    t.string   "dead_ball"
+    t.string   "total_lost_score"
+    t.string   "lost_score"
+    t.string   "avg_lost_score"
+    t.string   "whip"
+    t.string   "qs"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "ranks", force: true do |t|
     t.string   "rank"

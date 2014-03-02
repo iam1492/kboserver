@@ -54,12 +54,13 @@ KboApi::Application.routes.draw do
   #data api
   match 'ranks/chart(.format)' => 'ranks#chart', :via => :get
   match 'batters/chart(.format)' => 'batters#chart', :via => :get
+  match 'pitchers/chart(.format)' => 'pitchers#chart', :via => :get
   match 'schedules/chart(.format)' => 'schedules#chart', :via => :get
   match 'schedules/chart_by_date(.format)' => 'schedules#chart_by_date', :via => :get
 
   match 'scorelist/chart(.format)' => 'score_lists#chart', :via => :get
   match 'reports/chart(.format)' => 'reports#list', :via => :get
-  match 'total_rank/chart(.format)' => 'total_ranks#chart', :via => :get
+  match 'total_pitcher_rank/chart(.format)' => 'total_ranks#chart', :via => :get
   match 'total_hitter_rank/chart(.format)' => 'total_hitter_ranks#chart', :via => :get
   match 'teaminfos/chart(.format)' => 'team_infos#chart', :via => :get
 end
