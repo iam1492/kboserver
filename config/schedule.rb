@@ -52,3 +52,7 @@ end
 every :day, :at => '4:20am' do
   rake 'fetch_pitcher_rank'
 end
+
+every :day, :at => '4:25am' do
+  rake 'fetch_team_info'
+end
