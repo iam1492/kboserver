@@ -1,6 +1,6 @@
 class TeamInfosController < ApplicationController
   def chart
     teamInfos = TeamInfo.all
-    render :json=>{:success => true, :message=>'success to get team infos.', :total_ranks => teamInfos}
+    render :json=>{:success => true, :message=>'success to get team infos.', :teaminfos => teamInfos}
   end
 end

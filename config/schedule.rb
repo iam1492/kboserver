@@ -54,5 +54,37 @@ every :day, :at => '4:20am' do
 end
 
 every :day, :at => '4:25am' do
-  rake 'fetch_team_info'
+  rake 'fetch_team_info[382]'
+end
+
+every :day, :at => '4:26am' do
+  rake 'fetch_team_info[383]'
+end
+
+every :day, :at => '4:27am' do
+  rake 'fetch_team_info[384]'
+end
+
+every :day, :at => '4:28am' do
+  rake 'fetch_team_info[385]'
+end
+
+every :day, :at => '4:29am' do
+  rake 'fetch_team_info[386]'
+end
+
+every :day, :at => '4:30am' do
+  rake 'fetch_team_info[387]'
+end
+
+every :day, :at => '4:31am' do
+  rake 'fetch_team_info[390]'
+end
+
+every :day, :at => '4:32am' do
+  rake 'fetch_team_info[389]'
+end
+
+every :day, :at => '4:33am' do
+  rake 'fetch_team_info[172615]'
 end
