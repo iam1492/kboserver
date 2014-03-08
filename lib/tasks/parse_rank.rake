@@ -16,10 +16,8 @@ task :fetch_score => :environment do
   require 'date'
 
   strDate = Date.today.strftime('%Y.%m.%d')
-  #requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=%s' % strDate
+  requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=%s' % strDate
 
-  #test
-  requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=2013-10-05'
   doc = Nokogiri::HTML(open(requestUrl))
   rows = doc.xpath('//div[@id="contents"]/div[@class="smsScore"]')
   puts rows.size
@@ -52,6 +50,51 @@ task :fetch_score => :environment do
     ScoreList.create!(item)
   end
 end
+#
+#task :fetch_score2 => :environment do
+#  require 'open-uri'
+#  require 'nokogiri'
+#  require 'date'
+#
+#  strDate = Date.today.strftime('%Y.%m.%d')
+#  #requestUrl = 'http://www.koreabaseball.com/GameCast/GameList.aspx?searchDate=%s' % strDate
+#
+#  #test
+#  requestUrl = 'http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum'
+#  doc = Nokogiri::HTML(open(requestUrl))
+#  rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr[ends-with(@class,'today')]')
+#  #rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
+#  puts rows.size
+#  details = rows.collect do |row|
+#    detail = {}
+#    [
+#        [:status, 'td[@class="cont_score"]/span[@class="ico_comm3 ico_ing"]/text()'],
+#        [:home_team, 'td[@class="cont_score"]/a[@class="txt_home"]/text()'],
+#        [:home_score, 'td[@class="cont_score"]/span[@class="num_score"]/text()'],
+#        [:away_team, 'td[@class="cont_score"]/a[@class="txt_away"]/text()'],
+#        [:home_score, 'td[@class="cont_score"]/span[@class="num_score"]/text()'],
+#        [:station, 'td[@class="cont_area"]/text()'],
+#        [:start_time, 'td[@class="cont_time"]/text()'],
+#        [:link, 'td[@class="cont_cast"]/a[@class="btn_comm btn_preview"]/@href'],
+#        [:base_url, 'http://score.sports.media.daum.net']
+#    ].each do |name, xpath|
+#      if name.eql? :base_url
+#        detail[name] = xpath
+#      else
+#        detail[name] = row.at_xpath(xpath).to_s.strip
+#      end
+#    end
+#    detail
+#  end
+#  puts details
+#  #puts '============ delete all data ==========='
+#  #ScoreList.delete_all
+#  #
+#  #puts '============ insert new data ==========='
+#  #details.each do |item|
+#  #  ScoreList.create!(item)
+#  #end
+#end
 
 task :fetch_team_info, [:team_num] => :environment do |t, args|
   require 'open-uri'
