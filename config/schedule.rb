@@ -29,7 +29,7 @@ every 1.day do
   rake 'fetch_schedule'
 end
 
-every 4.hours do
+every 3.min do
   rake 'fetch_score'
 end
 
