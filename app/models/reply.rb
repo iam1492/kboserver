@@ -1,4 +1,5 @@
 class Reply < ActiveRecord::Base
+  attr_protected :id
   attr_accessible :content, :board_id, :imei, :created_at
   belongs_to :board
 

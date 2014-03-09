@@ -1,4 +1,5 @@
-class Comment < ActiveRecord::Base  
+class Comment < ActiveRecord::Base
+  attr_protected :id
   attr_accessible :ball, :base, :comment, :extra_1, :extra_2,
   				  :game_id, :out_count, :stage, :strike, :team_idx,
   				  :comment_type, :created_at, :nickname, :id, :is_broadcast,

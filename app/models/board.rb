@@ -1,4 +1,5 @@
 class Board < ActiveRecord::Base
+  attr_protected :id
   attr_accessible :title, :content, :imei, :id, :photo, :board_type
   has_attached_file :photo, :styles => { :original => "720x", :medium => "320x", :thumb => "100x100>" }
 
