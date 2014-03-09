@@ -1,4 +1,5 @@
 class Article < ActiveRecord::Base
+  attr_protected :id
   attr_accessible :article_url, :nickname, :title,
                   :cached_votes_up, :alert_count, :created_at, :imei
 
