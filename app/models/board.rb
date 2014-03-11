@@ -1,6 +1,6 @@
 class Board < ActiveRecord::Base
   attr_protected :id
-  attr_accessible :title, :content, :imei, :id, :photo, :board_type
+  attr_accessible :title, :content, :imei, :id, :photo, :board_type, :cached_votes_total, :cached_votes_up, :cached_votes_down, :cached_votes_score
   has_attached_file :photo, :styles => { :original => "720x", :medium => "320x", :thumb => "100x100>" }
 
   self.per_page = 20
