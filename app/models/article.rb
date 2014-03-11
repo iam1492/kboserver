@@ -1,7 +1,7 @@
 class Article < ActiveRecord::Base
   attr_protected :id
   attr_accessible :article_url, :nickname, :title,
-                  :cached_votes_up, :alert_count, :created_at, :imei
+                  :cached_votes_up, :alert_count, :created_at, :imei, :cached_votes_total, :cached_votes_up, :cached_votes_down, :cached_votes_score
 
   acts_as_api
   acts_as_votable
