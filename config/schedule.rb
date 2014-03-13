@@ -29,9 +29,9 @@ every 1.day do
   rake 'fetch_schedule'
 end
 
-every 3.minutes do
-  rake 'fetch_score'
-end
+#every 3.minutes do
+#  rake 'fetch_score'
+#end
 
 every :day, :at => '4:00am' do
   rake 'fetch_report'

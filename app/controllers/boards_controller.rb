@@ -217,7 +217,7 @@ class BoardsController < ApiController
       return
     end
     if board.alerting? user_imei
-      render :json=>{:success => false, :result_code => 1, :message=> 'already alert'}
+      render :json=>{:success => false, :result_code => 2, :message=> 'already alert'}
     else
       board.alert!(user_imei)
       render :json=>{:success => true, :result_code => 0, :message=> 'alert success'}
