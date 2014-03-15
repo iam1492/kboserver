@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessible :blocked, :imei, :nick_count, :nickname, :user_type, :alerter_count, :alerters_count, :profile, :intro, :updated_at
-  has_attached_file :profile, :styles => { :original => "720x", :medium => "200x200>", :thumb => "100x100>" }
+  has_attached_file :profile, :styles => { :original => "720x", :medium => "200x200>", :thumb => "100x100>" }, :default_url => "/images/profile/missing.png"
 
   after_save    :expire_user_cache
   after_destroy :expire_user_cache
