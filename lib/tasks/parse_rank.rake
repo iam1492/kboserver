@@ -302,14 +302,14 @@ task :fetch_batter_rank => :environment do
 
     detail
   end
-  puts details
-  #puts '============ delete all data ==========='
-  #Batter.delete_all
-  #
-  #puts '============ insert new data ==========='
-  #details.each do |item|
-  #   Batter.create!(item)
-  #end
+  #puts details
+  puts '============ delete all data ==========='
+  Batter.delete_all
+
+  puts '============ insert new data ==========='
+  details.each do |item|
+     Batter.create!(item)
+  end
 end
 
 task :fetch_pitcher_rank => :environment do
