@@ -270,7 +270,7 @@ task :fetch_batter_rank => :environment do
     [
         [:rank, 'td[@class="num_rank"]/text()'],
         [:player, 'td[@class="txt_league"]//text()'],
-        [:team, 'td[@class="txt_league"]/text()'],
+        [:team, 'td[@class="txt_league"]//text()'],
         [:game_count, 'td[3]/text()'],
         [:play_count, 'td[4]/text()'],
         [:bat_count, 'td[5]/text()'],
@@ -289,18 +289,27 @@ task :fetch_batter_rank => :environment do
         [:ops, 'td[18]/text()']
 
     ].each do |name, xpath|
-      detail[name] = row.at_xpath(xpath).to_s.strip
+      if name.eql?(:player)
+        player_team = row.at_xpath(xpath).to_s.strip
+        detail[name] = player_team.split.first
+      elsif name.eql?(:team)
+        player_team = row.at_xpath(xpath).to_s.strip
+        detail[name] = player_team.match(/\((.*)\)/)[1]
+      else
+        detail[name] = row.at_xpath(xpath).to_s.strip
+      end
     end
+
     detail
   end
-
-  puts '============ delete all data ==========='
-  Batter.delete_all
-
-  puts '============ insert new data ==========='
-  details.each do |item|
-     Batter.create!(item)
-  end
+  puts details
+  #puts '============ delete all data ==========='
+  #Batter.delete_all
+  #
+  #puts '============ insert new data ==========='
+  #details.each do |item|
+  #   Batter.create!(item)
+  #end
 end
 
 task :fetch_pitcher_rank => :environment do
@@ -315,8 +324,8 @@ task :fetch_pitcher_rank => :environment do
     detail = {}
     [
         [:rank, 'td[@class="num_rank"]/text()'],
-        [:player, 'td[@class="txt_league"]/a/text()'],
-        [:team, 'td[@class="txt_league"]/a/text()'],
+        [:player, 'td[@class="txt_league"]//text()'],
+        [:team, 'td[@class="txt_league"]//text()'],
         [:game_count, 'td[3]/text()'],
         [:win, 'td[4]/text()'],
         [:lose, 'td[5]/text()'],
@@ -340,14 +349,14 @@ task :fetch_pitcher_rank => :environment do
         detail[name] = player_team.split.first
       elsif name.eql?(:team)
         player_team = row.at_xpath(xpath).to_s.strip
-        detail[name] = player_team.split.last
+        detail[name] = player_team.match(/\((.*)\)/)[1]
       else
         detail[name] = row.at_xpath(xpath).to_s.strip
       end
     end
+
     detail
   end
-
   puts '============ delete all data ==========='
   Pitcher.delete_all
 
