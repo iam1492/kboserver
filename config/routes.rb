@@ -64,4 +64,6 @@ KboApi::Application.routes.draw do
   match 'total_pitcher_rank/chart(.format)' => 'total_ranks#chart', :via => :get
   match 'total_hitter_rank/chart(.format)' => 'total_hitter_ranks#chart', :via => :get
   match 'teaminfos/chart(.format)' => 'team_infos#chart', :via => :get
+
+  match 'sla/index(.format)' => 'sla#index', :via => :get
 end
