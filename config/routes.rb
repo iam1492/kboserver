@@ -57,6 +57,7 @@ KboApi::Application.routes.draw do
   match 'pitchers/chart(.format)' => 'pitchers#chart', :via => :get
   match 'schedules/chart(.format)' => 'schedules#chart', :via => :get
   match 'schedules/chart_by_date(.format)' => 'schedules#chart_by_date', :via => :get
+  match 'schedules/find_match_by_day(.format)' => 'schedules#find_match_by_day', :via => :get
 
   match 'scorelist/chart(.format)' => 'score_lists#chart', :via => :get
   match 'reports/chart(.format)' => 'reports#list', :via => :get

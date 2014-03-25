@@ -25,7 +25,19 @@ every 6.hours do
   rake 'fetch_chart'
 end
 
-every 1.day do
+every :day, :at => '12:00am' do
+  rake 'fetch_schedule'
+end
+
+every :day, :at => '12:01am' do
+  rake 'fetch_schedule'
+end
+
+every :day, :at => '12:05am' do
+  rake 'fetch_schedule'
+end
+
+every :day, :at => '12:30am' do
   rake 'fetch_schedule'
 end
 

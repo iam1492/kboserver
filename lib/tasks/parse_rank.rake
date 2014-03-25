@@ -370,7 +370,7 @@ task :fetch_schedule => :environment do
   require 'open-uri'
   require 'nokogiri'
 
-  doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum?game_year=2013&game_month=09'))
+  doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum'))
   rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
   puts rows.length
   details = rows.collect do |row|
@@ -402,8 +402,8 @@ task :fetch_schedule => :environment do
           homeScore = scoreArr[0].nil? ? '' : scoreArr[0]
           awayScore = scoreArr[1].nil? ? '' : scoreArr[1]
 
-          detail['home_score'] = homeScore.strip
-          detail['away_score'] = awayScore.strip
+          detail[:home_score] = homeScore.strip
+          detail[:away_score] = awayScore.strip
         elsif name.eql?(:game_relay_url)
           xpath_text = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_text"]/@href'
           xpath_cast = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_caster"]/@href'
@@ -422,7 +422,7 @@ task :fetch_schedule => :environment do
       end
       detail
   end
-  #puts details
+  puts details
   puts '============ delete all data ==========='
     Schedule.delete_all
 

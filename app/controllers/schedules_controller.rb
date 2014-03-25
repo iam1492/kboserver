@@ -4,7 +4,14 @@ class SchedulesController < ApiController
 
   def chart
     schedule = Schedule.all
-    render :json=>{:success => true, :message=>'fail to create new notice.', :schedule => schedule}
+    render :json=>{:success => true, :message=>'fail to create new notice.', :schedules => schedule}
+  end
+
+  def find_match_by_day
+    day = params[:day]
+    schedules = Schedule.find_by(day: day)
+    logger.debug schedules.to_s
+    render :json=>{:success => true, :message=>'success to get info.', :no_match => schedules.no_match}
   end
 
   def chart_by_date
