@@ -21,7 +21,7 @@
 
 set :output, "#{path}/log/cron.log"
 
-every 6.hours do
+every 3.hours do
   rake 'fetch_chart'
 end
 
@@ -45,7 +45,11 @@ end
 #  rake 'fetch_score'
 #end
 
-every :day, :at => '4:00am' do
+every :day, :at => '4:05am' do
+  rake 'fetch_report'
+end
+
+every :day, :at => '9:00pm' do
   rake 'fetch_report'
 end
 
@@ -62,6 +66,22 @@ every :day, :at => '4:15am' do
 end
 
 every :day, :at => '4:20am' do
+  rake 'fetch_pitcher_rank'
+end
+
+every :day, :at => '11:00pm' do
+  rake 'fetch_batter_total_rank'
+end
+
+every :day, :at => '11:00pm' do
+  rake 'fetch_pitcher_total_rank'
+end
+
+every :day, :at => '11:00pm' do
+  rake 'fetch_batter_rank'
+end
+
+every :day, :at => '11:00pm' do
   rake 'fetch_pitcher_rank'
 end
 

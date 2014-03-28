@@ -10,7 +10,6 @@ class SchedulesController < ApiController
   def find_match_by_day
     day = params[:day]
     schedules = Schedule.find_by(day: day)
-    logger.debug schedules.to_s
     render :json=>{:success => true, :message=>'success to get info.', :no_match => schedules.no_match}
   end
 
