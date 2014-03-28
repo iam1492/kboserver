@@ -170,10 +170,21 @@ task :fetch_chart => :environment do
     end
   		detail
   end
+
+  if (details.size == 0)
+    details = [{:rank => 1, :team => '두산', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => '넥센', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => 'LG', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => 'NC', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => '삼성', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => '한화', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => 'SK', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => '기아', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
+               {:rank => 1, :team => '롯데', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'}]
+  end
   puts details
   puts '============ delete all data ==========='
   Rank.delete_all
-
   puts '============ insert new data ==========='
   details.each do |item|
     Rank.create!(item)
