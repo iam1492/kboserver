@@ -25,22 +25,6 @@ every 3.hours do
   rake 'fetch_chart'
 end
 
-every :day, :at => '12:00am' do
-  rake 'fetch_schedule'
-end
-
-every :day, :at => '12:01am' do
-  rake 'fetch_schedule'
-end
-
-every :day, :at => '12:05am' do
-  rake 'fetch_schedule'
-end
-
-every :day, :at => '12:30am' do
-  rake 'fetch_schedule'
-end
-
 #every 3.minutes do
 #  rake 'fetch_score'
 #end

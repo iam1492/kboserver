@@ -131,7 +131,6 @@ task :fetch_team_info, [:team_num] => :environment do |t, args|
     end
     detail
   end
-  puts details[0]
 
   teamInfo = TeamInfo.find_or_initialize_by_team_id(details[0][:team_id])
   teamInfo.update_attributes(details[0])
@@ -182,7 +181,6 @@ task :fetch_chart => :environment do
                {:rank => 1, :team => '기아', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'},
                {:rank => 1, :team => '롯데', :game_count => '0', :win => '0', :defeat => '0', :draw => '0', :win_rate => '0', :win_diff => '0', :win_continue => '0', :recent_game => '0'}]
   end
-  puts details
   puts '============ delete all data ==========='
   Rank.delete_all
   puts '============ insert new data ==========='
@@ -381,7 +379,10 @@ task :fetch_schedule => :environment do
   require 'open-uri'
   require 'nokogiri'
 
-  doc = Nokogiri::HTML(open('http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum'))
+  #year = params[:year]
+  #month = params[:month]
+  url = 'http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum?game_year=2014&game_month=03'
+  doc = Nokogiri::HTML(open(url))
   rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
   puts rows.length
   details = rows.collect do |row|
@@ -400,46 +401,45 @@ task :fetch_schedule => :environment do
         [:game_record_url,'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_result"]/@href'],
         [:is_canceled, 'td[@class="cont_score"]/span[@class="ico_comm3 ico_cancel"]/text()']
     ].each do |name, xpath|
-        if name.eql?(:no_match)  || name.eql?(:is_canceled)
-          has_field = !row.at_xpath(xpath).nil?
-          if has_field
-            detail[name] = true
-          else
-            detail[name] = false
-          end
-        elsif name.eql?(:score)
-          score = row.css(xpath).text
-          scoreArr = score.split(':')
-          homeScore = scoreArr[0].nil? ? '' : scoreArr[0]
-          awayScore = scoreArr[1].nil? ? '' : scoreArr[1]
-
-          detail[:home_score] = homeScore.strip
-          detail[:away_score] = awayScore.strip
-        elsif name.eql?(:game_relay_url)
-          xpath_text = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_text"]/@href'
-          xpath_cast = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_caster"]/@href'
-
-          value_text = row.at_xpath(xpath_text).to_s
-          value_cast = row.at_xpath(xpath_cast).to_s
-
-          if (value_text.length != 0)
-            detail[name] = value_text
-          else
-            detail[name] = value_cast
-          end
+      if name.eql?(:no_match)  || name.eql?(:is_canceled)
+        has_field = !row.at_xpath(xpath).nil?
+        if has_field
+          detail[name] = true
         else
-          detail[name] = row.at_xpath(xpath).to_s
+          detail[name] = false
         end
-      end
-      detail
-  end
-  puts details
-  puts '============ delete all data ==========='
-    Schedule.delete_all
+      elsif name.eql?(:score)
+        score = row.css(xpath).text
+        scoreArr = score.split(':')
+        homeScore = scoreArr[0].nil? ? '' : scoreArr[0]
+        awayScore = scoreArr[1].nil? ? '' : scoreArr[1]
 
-  puts '============ insert new data ==========='
-  details.each do |item|
-    Schedule.create!(item)
+        detail['home_score'] = homeScore.strip
+        detail['away_score'] = awayScore.strip
+      elsif name.eql?(:game_relay_url)
+        xpath_text = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_text"]/@href'
+        xpath_cast = 'td[@class="cont_cast"]/span[@class="wrap_btn"]/a[@class="btn_comm btn_caster"]/@href'
+
+        value_text = row.at_xpath(xpath_text).to_s
+        value_cast = row.at_xpath(xpath_cast).to_s
+
+        if (value_text.length != 0)
+          detail[name] = value_text
+        else
+          detail[name] = value_cast
+        end
+      else
+        detail[name] = row.at_xpath(xpath).to_s
+      end
+    end
+    detail
   end
+  #puts '============ delete all data ==========='
+  #  Schedule.delete_all
+  #
+  #puts '============ insert new data ==========='
+  #details.each do |item|
+  #  Schedule.create!(item)
+  #end
 end
 
