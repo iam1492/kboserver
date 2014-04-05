@@ -21,7 +21,7 @@
 
 set :output, "#{path}/log/cron.log"
 
-every 3.hours do
+every 30.minutes do
   rake 'fetch_chart'
 end
 

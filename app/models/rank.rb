@@ -1,5 +1,5 @@
 class Rank < ActiveRecord::Base
-  attr_accessible :rank, :team, :game_count, :win, :defeat, :draw, :win_rate, :win_diff, :win_continue, :recent_game
+  attr_accessible :rank, :team, :game_count, :win, :defeat, :draw, :win_rate, :win_diff, :win_continue, :recent_game, :team_id
   after_commit :flush_cache
 
   def self.cached_rank
