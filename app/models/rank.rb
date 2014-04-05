@@ -3,8 +3,8 @@ class Rank < ActiveRecord::Base
   after_commit :flush_cache
 
   def self.cached_rank
-    Rails.cache.fetch([self, 'ranks'], expires_in: 20.minutes) do
-      Rank.all.to_a
+    Rails.cache.fetch([self, 'rank_new'], expires_in: 20.minutes) do
+      Rank.all.order('rank ASC')
     end
   end
 
