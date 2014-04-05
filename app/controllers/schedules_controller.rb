@@ -18,7 +18,7 @@ class SchedulesController < ApiController
     month = params[:month]
     url = 'http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum?game_year=%s&game_month=%s' % [year, month]
 
-    hashed_details = Rails.cache.fetch url do
+    hashed_details = Rails.cache.fetch(year+month, :expires_in => 20.minutes) do
       doc = Nokogiri::HTML(open(url))
       rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
       details = rows.collect do |row|
