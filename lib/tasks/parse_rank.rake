@@ -132,9 +132,24 @@ task :fetch_team_info, [:team_num] => :environment do |t, args|
     detail
   end
 
-  teamInfo = TeamInfo.find_or_initialize_by_team_id(details[0][:team_id])
-  teamInfo.update_attributes(details[0])
+  if !details[0].nil?
 
+    team_id = details[0][:team_id]
+    should_update = false
+
+    case team_id
+      when 382..390
+        should_update = true
+      when 172615
+        should_update = true
+    end
+
+    if should_update
+      teamInfo = TeamInfo.find_or_initialize_by_team_id(details[0][:team_id])
+      result = teamInfo.update_attributes(details[0])
+      puts 'update=' + result.to_s
+    end
+  end
   #puts '============ delete all data ==========='
   #Rank.delete_all
   #
