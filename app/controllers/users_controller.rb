@@ -200,7 +200,7 @@ class UsersController < ApiController
       return      
     end
 
-    if (@user.nick_count > 2)
+    if (@user.nick_count > 4)
       render :json=>{:success => true, :result_code => 1, :message=>"max nick count"}
       return
     end
