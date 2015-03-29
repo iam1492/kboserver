@@ -54,11 +54,7 @@ every :day, :at => '4:20am' do
 end
 
 every :day, :at => '11:00pm' do
-  rake 'fetch_batter_total_rank'
-end
-
-every :day, :at => '11:00pm' do
-  rake 'fetch_pitcher_total_rank'
+  rake 'new_total_rank'
 end
 
 every :day, :at => '11:00pm' do
