@@ -220,6 +220,107 @@ task :init_rank => :environment do
   Rank.delete_all
 end
 
+task :new_total_rank => :environment do
+  require 'open-uri'
+  require 'nokogiri'
+
+  doc = Nokogiri::HTML(open('http://www.koreabaseball.com/Record/Main.aspx'))
+  rows = doc.xpath('//div[@class="record_list"]')
+
+  hitters = []
+
+  rows.each_with_index do |row, index|
+    innerRows = row.xpath("div[contains(concat(' ', @class, ' '), ' record ')]")
+    innerRows += row.xpath("div/div[contains(concat(' ', @class, ' '), ' record ')]")
+    # innerRows = row.xpath('div/div[@class="list"]/div/ol[@class="rankList"]')
+
+    #타자 
+    if index == 0
+      details = []
+      innerRows.each_with_index do |row, index|
+        detail = {}
+        players = ''
+        values = ''
+        
+        lastRows = row.xpath('div[@class="list"]/div[@class="player_top5"]/ol/li')
+        lastRows.each_with_index do |item, item_idx|
+          players += (item.at_xpath('span/a/text()').to_s.strip + '(' + item.at_xpath('span[@class="team"]/text()').to_s.strip + ')')
+          values += item.at_xpath('span[@class="rr"]/text()').to_s.strip
+          if (item_idx < lastRows.length - 1)
+            players += ','
+            values += ','
+          end
+        end
+        
+        detail['profile_img'] = lastRows.at_xpath('../../../div/img/@src').to_s.strip
+        detail['profile_img'].slice! 'http://www.koreabaseball.com/'
+        
+        case index
+          when 3 then detail['category'] = 7
+          when 4 then detail['category'] = 3
+          when 5 then detail['category'] = 4
+          when 9 then detail['category'] = 5
+          when 10 then detail['category'] = 6
+          when 6,7,8,11,12,13,14 then next
+          else detail['category'] = index
+        end
+        detail['players'] = players
+        detail['values'] = values
+        details << detail
+      end
+      puts '============ delete all data ==========='
+      TotalHitterRank.delete_all
+
+      puts '============ insert new data ==========='
+      details.each do |item|
+        TotalHitterRank.create!(item)
+      end
+    end
+
+    #투수
+    if index == 1
+      details = []
+      innerRows.each_with_index do |row, index|
+        detail = {}
+        players = ''
+        values = ''
+        
+        lastRows = row.xpath('div[@class="list"]/div[@class="player_top5"]/ol/li')
+        lastRows.each_with_index do |item, item_idx|
+          players += (item.at_xpath('span/a/text()').to_s.strip + '(' + item.at_xpath('span[@class="team"]/text()').to_s.strip + ')')
+          values += item.at_xpath('span[@class="rr"]/text()').to_s.strip
+          if (item_idx < lastRows.length - 1)
+            players += ','
+            values += ','
+          end
+        end
+        
+        detail['profile_img'] = lastRows.at_xpath('../../../div/img/@src').to_s.strip
+        detail['profile_img'].slice! 'http://www.koreabaseball.com/'
+
+        case index
+          when 5 then detail['category'] = 3
+          when 6 then detail['category'] = 4
+          when 9 then detail['category'] = 5          
+          when 3,4,7,8,10,11,12,13,14 then next
+          else detail['category'] = index
+        end
+        detail['players'] = players
+        detail['values'] = values
+        details << detail
+
+      end
+      puts '============ delete all data ==========='
+      TotalRank.delete_all
+
+      puts '============ insert new data ==========='
+      details.each do |item|
+        TotalRank.create!(item)
+      end
+    end
+  end
+end
+
 task :fetch_pitcher_total_rank => :environment do
   require 'open-uri'
   require 'nokogiri'
