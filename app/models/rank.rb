@@ -4,7 +4,7 @@ class Rank < ActiveRecord::Base
 
   def self.cached_rank
     Rails.cache.fetch([self, 'rank_new'], expires_in: 20.minutes) do
-      Rank.all.order('rank ASC')
+      Rank.all.sort_by { |a| a.rank.to_i }
     end
   end
 
