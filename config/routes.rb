@@ -2,6 +2,7 @@ KboApi::Application.routes.draw do
 
   get "batters/chart"
   match 'comments(.format)' => 'comments#create', :via => :post
+  match 'comments(.format)' => 'comments#destroy', :via => :delete
   match 'comments/:id(.format)' => 'comments#show', :via => :get, :constraints => {:id => /\d+/}
   match 'get_comments(.format)' => 'comments#getComments', :via => :get
   match 'get_more_comments(.format)' => 'comments#getMoreComments', :via => :get

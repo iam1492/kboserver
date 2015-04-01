@@ -4,6 +4,17 @@ class CommentsController < ApiController
 
   self.responder = ActsAsApi::Responder
 
+  def destroy
+    @comment = Comment.find(params[:id])
+    if @comment.destroy
+      render :json=>{:success => true, :message=>"success to destroy user."}
+      return
+    else
+      render :json=>{:success => false, :message=>"fail to destroy user."}
+      return      
+    end
+  end
+  
   def create
   	@comment = Comment.new(params[:comment])
 
