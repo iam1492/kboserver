@@ -142,6 +142,8 @@ task :fetch_team_info, [:team_num] => :environment do |t, args|
         should_update = true
       when 172615
         should_update = true
+      when 394601
+        should_update = true
     end
 
     if should_update

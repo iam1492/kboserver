@@ -100,3 +100,7 @@ end
 every :day, :at => '4:33am' do
   rake 'fetch_team_info[172615]'
 end
+
+every :day, :at => '4:35am' do
+  rake 'fetch_team_info[394601]'
+end
