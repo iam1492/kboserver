@@ -36,6 +36,7 @@ class Board < ActiveRecord::Base
     t.add :board_type
     t.add :is_voted
     t.add :profile_thumbnail_url
+    t.add :userProfile
     t.add :alert_count
   end
 
@@ -55,6 +56,7 @@ class Board < ActiveRecord::Base
     t.add :board_type
     t.add :is_voted
     t.add :profile_thumbnail_url
+    t.add :userProfile
     t.add :alert_count
   end
 
@@ -94,6 +96,24 @@ class Board < ActiveRecord::Base
     end
 
   	user.nickname
+  end
+
+  def userProfile
+    
+    if (self.imei.nil?)
+      return ""
+    end
+    
+    @user = User.cachedUserInfo(self.imei)
+    if (@user.nil?)
+      @user = User.getUserInfo(self.imei);
+    end
+    
+    if (@user.nil?)
+      return ""
+    end
+
+    @user.profile_path
   end
 
   def profile_thumbnail_url

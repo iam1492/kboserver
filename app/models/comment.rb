@@ -42,7 +42,26 @@ class Comment < ActiveRecord::Base
     t.add :homescore
     t.add :awayscore
     t.add :userProfileThumbnail
+    t.add :userProfile
     t.add :imei
+  end
+
+  def userProfile
+    
+    if (self.imei.nil?)
+      return ""
+    end
+    
+    @user = User.cachedUserInfo(self.imei)
+    if (@user.nil?)
+      @user = User.getUserInfo(self.imei);
+    end
+    
+    if (@user.nil?)
+      return ""
+    end
+
+    @user.profile_path
   end
 
   def userProfileThumbnail
