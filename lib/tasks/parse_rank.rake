@@ -517,7 +517,7 @@ task :fetch_schedule => :environment do
   #month = params[:month]
   url = 'http://score.sports.media.daum.net/schedule/baseball/kbo/main.daum?game_year=2014&game_month=03'
   doc = Nokogiri::HTML(open(url))
-  rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
+  rows = doc.xpath('//table[@class="tbl tbl_schedule tbl_country"]/tbody/tr')
   puts rows.length
   details = rows.collect do |row|
     detail = {}
