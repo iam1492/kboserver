@@ -20,7 +20,7 @@ class SchedulesController < ApiController
 
     hashed_details = Rails.cache.fetch(year+month, :expires_in => 20.minutes) do
       doc = Nokogiri::HTML(open(url))
-      rows = doc.xpath('//table[@class="tbl tbl_schedule"]/tbody/tr')
+      rows = doc.xpath('//table[@class="tbl tbl_schedule tbl_country"]/tbody/tr')
       details = rows.collect do |row|
         detail = {}
         [
