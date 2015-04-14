@@ -24,7 +24,7 @@ class SchedulesController < ApiController
       details = rows.collect do |row|
         detail = {}
         [
-            [:day, 'td[@class="time_date"]/span[@class="num_time"]/text()'],
+            [:day, 'td[@class="time_date"]/text()'],
             [:weak, 'td[@class="time_date"]/span[@class="txt_day"]/text()'],
             [:home_team, 'td[@class="cont_score"]/a[@class="txt_home"]/text()'],
             [:score, 'span[class=num_score]'],
